@@ -1,25 +1,76 @@
-//
-//  ViewController.swift
-//  P2PUnderdark
-//
-//  Created by Alexander Harrison on 3/23/16.
-//  Copyright © 2016 Alexander Harrison. All rights reserved.
-//
-
 import UIKit
+import Underdark
+import ReactiveCocoa
+import enum Result.NoError
+public typealias NoError = Result.NoError
 
-class ViewController: UIViewController {
+class ChatViewController: UITableViewController {
 
+    let chatFieldCellId = "chatFieldCellId"
+    let messageTableId = "messageTableId"
+    let node = Node()
+    var messages: MutableProperty<[String]> = MutableProperty([String]())
+    var text: MutableProperty<String> = MutableProperty("")
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+        super.init(nibName: nil, bundle: nil)
+        registerCells()
+        configureRac()
     }
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        registerCells()
+        configureRac()
+    }
+    override init(style: UITableViewStyle) {
+        super.init(style: style)
+        registerCells()
+        configureRac()
+    }
+    func configureRac() {
+        node.lastIncommingMessage.signal
+            .observeNext{self.messages.value.append($0)}
+    }
+    func sendFrames() {
+        print("sennding frame")
+        let data = text.value.dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
+        node.broadcastFrame(data)
+    }
+    func registerCells() {
+        tableView.registerNib(UINib(nibName: "ChatFieldCell", bundle: nil), forCellReuseIdentifier: chatFieldCellId)
+        tableView.registerNib(UINib(nibName: "MessageTableCell", bundle: nil), forCellReuseIdentifier: messageTableId)
 
-
+    }
+    // MARK: DATA SOURCE
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 2
+    }
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if indexPath.row == 0 {
+            return 60.0
+        } else if indexPath.row == 1 {
+            return self.view.bounds.height - 60.0
+        } else {
+            return 0.0
+        }
+    }
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if indexPath.row == 0 {
+            let cell = tableView.dequeueReusableCellWithIdentifier(chatFieldCellId, forIndexPath: indexPath) as? ChatFieldCell ?? ChatFieldCell()
+            cell.sendButton.addTarget(self, action: "sendFrames", forControlEvents: .TouchUpInside)
+            self.text <~ cell.chatField.rac_textSignal()
+                .toSignalProducer()
+                .map{$0 as? String}
+                .ignoreNil()
+                .flatMapError { _ in SignalProducer<String, NoError>.empty}
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCellWithIdentifier(messageTableId, forIndexPath: indexPath) as? MessageTableCell ?? MessageTableCell()
+            cell.configureRac(messages.signal)
+            return cell
+        }
+    }
 }
 

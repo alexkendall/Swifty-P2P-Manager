@@ -14,6 +14,19 @@
 		FA0BA5DD1CA2D14C00D1A0B5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA0BA5DB1CA2D14C00D1A0B5 /* LaunchScreen.storyboard */; };
 		FA0BA5E81CA2D14C00D1A0B5 /* P2PUnderdarkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0BA5E71CA2D14C00D1A0B5 /* P2PUnderdarkTests.swift */; };
 		FA0BA5F31CA2D14C00D1A0B5 /* P2PUnderdarkUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0BA5F21CA2D14C00D1A0B5 /* P2PUnderdarkUITests.swift */; };
+		FA0BA6011CA2D1F500D1A0B5 /* ChatFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0BA6001CA2D1F500D1A0B5 /* ChatFieldCell.swift */; };
+		FA0BA6031CA2D23400D1A0B5 /* MessageTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0BA6021CA2D23400D1A0B5 /* MessageTableCell.swift */; };
+		FA0BA6051CA2D25800D1A0B5 /* ChatFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA0BA6041CA2D25800D1A0B5 /* ChatFieldCell.xib */; };
+		FA0BA6071CA2D3B700D1A0B5 /* MessageTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA0BA6061CA2D3B700D1A0B5 /* MessageTableCell.xib */; };
+		FA0BA6091CA2D70C00D1A0B5 /* Underdark.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA0BA6081CA2D70C00D1A0B5 /* Underdark.framework */; };
+		FA0BA60C1CA2D72400D1A0B5 /* Underdark.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FA0BA60A1CA2D72400D1A0B5 /* Underdark.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FA0BA6101CA2D7C000D1A0B5 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0BA60F1CA2D7C000D1A0B5 /* NetworkManager.swift */; };
+		FA0BA6141CA2E3ED00D1A0B5 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA0BA6111CA2E3ED00D1A0B5 /* ReactiveCocoa.framework */; };
+		FA0BA6151CA2E3ED00D1A0B5 /* ReactiveCocoa.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FA0BA6111CA2E3ED00D1A0B5 /* ReactiveCocoa.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FA0BA6161CA2E3EE00D1A0B5 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA0BA6131CA2E3ED00D1A0B5 /* Result.framework */; };
+		FA0BA6171CA2E3EE00D1A0B5 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FA0BA6131CA2E3ED00D1A0B5 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FA0BA61A1CA2E40D00D1A0B5 /* ReactiveCocoa.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FA0BA6111CA2E3ED00D1A0B5 /* ReactiveCocoa.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FA0BA61C1CA2E40D00D1A0B5 /* Result.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FA0BA6131CA2E3ED00D1A0B5 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +46,42 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		FA0BA60D1CA2D72500D1A0B5 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				FA0BA6171CA2E3EE00D1A0B5 /* Result.framework in Embed Frameworks */,
+				FA0BA60C1CA2D72400D1A0B5 /* Underdark.framework in Embed Frameworks */,
+				FA0BA6151CA2E3ED00D1A0B5 /* ReactiveCocoa.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FA0BA6181CA2E3F700D1A0B5 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FA0BA6191CA2E40000D1A0B5 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				FA0BA61A1CA2E40D00D1A0B5 /* ReactiveCocoa.framework in CopyFiles */,
+				FA0BA61C1CA2E40D00D1A0B5 /* Result.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		FA0BA5CF1CA2D14C00D1A0B5 /* P2PUnderdark.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = P2PUnderdark.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA0BA5D21CA2D14C00D1A0B5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -47,6 +96,16 @@
 		FA0BA5EE1CA2D14C00D1A0B5 /* P2PUnderdarkUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = P2PUnderdarkUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA0BA5F21CA2D14C00D1A0B5 /* P2PUnderdarkUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = P2PUnderdarkUITests.swift; sourceTree = "<group>"; };
 		FA0BA5F41CA2D14C00D1A0B5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FA0BA6001CA2D1F500D1A0B5 /* ChatFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFieldCell.swift; sourceTree = "<group>"; };
+		FA0BA6021CA2D23400D1A0B5 /* MessageTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageTableCell.swift; sourceTree = "<group>"; };
+		FA0BA6041CA2D25800D1A0B5 /* ChatFieldCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatFieldCell.xib; sourceTree = "<group>"; };
+		FA0BA6061CA2D3B700D1A0B5 /* MessageTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageTableCell.xib; sourceTree = "<group>"; };
+		FA0BA6081CA2D70C00D1A0B5 /* Underdark.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Underdark.framework; path = ../../Downloads/Underdark.framework; sourceTree = "<group>"; };
+		FA0BA60A1CA2D72400D1A0B5 /* Underdark.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Underdark.framework; sourceTree = "<group>"; };
+		FA0BA60F1CA2D7C000D1A0B5 /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		FA0BA6111CA2E3ED00D1A0B5 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/iOS/ReactiveCocoa.framework; sourceTree = "<group>"; };
+		FA0BA6121CA2E3ED00D1A0B5 /* ReactiveCocoa.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = ReactiveCocoa.framework.dSYM; path = Carthage/Build/iOS/ReactiveCocoa.framework.dSYM; sourceTree = "<group>"; };
+		FA0BA6131CA2E3ED00D1A0B5 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +113,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA0BA6161CA2E3EE00D1A0B5 /* Result.framework in Frameworks */,
+				FA0BA6091CA2D70C00D1A0B5 /* Underdark.framework in Frameworks */,
+				FA0BA6141CA2E3ED00D1A0B5 /* ReactiveCocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,7 +139,11 @@
 		FA0BA5C61CA2D14C00D1A0B5 = {
 			isa = PBXGroup;
 			children = (
+				FA0BA6111CA2E3ED00D1A0B5 /* ReactiveCocoa.framework */,
+				FA0BA6121CA2E3ED00D1A0B5 /* ReactiveCocoa.framework.dSYM */,
+				FA0BA6131CA2E3ED00D1A0B5 /* Result.framework */,
 				FA0BA5D11CA2D14C00D1A0B5 /* P2PUnderdark */,
+				FA0BA60E1CA2D73000D1A0B5 /* Frameworks */,
 				FA0BA5E61CA2D14C00D1A0B5 /* P2PUnderdarkTests */,
 				FA0BA5F11CA2D14C00D1A0B5 /* P2PUnderdarkUITests */,
 				FA0BA5D01CA2D14C00D1A0B5 /* Products */,
@@ -99,6 +165,11 @@
 			children = (
 				FA0BA5D21CA2D14C00D1A0B5 /* AppDelegate.swift */,
 				FA0BA5D41CA2D14C00D1A0B5 /* ViewController.swift */,
+				FA0BA60F1CA2D7C000D1A0B5 /* NetworkManager.swift */,
+				FA0BA6001CA2D1F500D1A0B5 /* ChatFieldCell.swift */,
+				FA0BA6041CA2D25800D1A0B5 /* ChatFieldCell.xib */,
+				FA0BA6021CA2D23400D1A0B5 /* MessageTableCell.swift */,
+				FA0BA6061CA2D3B700D1A0B5 /* MessageTableCell.xib */,
 				FA0BA5D61CA2D14C00D1A0B5 /* Main.storyboard */,
 				FA0BA5D91CA2D14C00D1A0B5 /* Assets.xcassets */,
 				FA0BA5DB1CA2D14C00D1A0B5 /* LaunchScreen.storyboard */,
@@ -125,6 +196,15 @@
 			path = P2PUnderdarkUITests;
 			sourceTree = "<group>";
 		};
+		FA0BA60E1CA2D73000D1A0B5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FA0BA60A1CA2D72400D1A0B5 /* Underdark.framework */,
+				FA0BA6081CA2D70C00D1A0B5 /* Underdark.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -135,6 +215,9 @@
 				FA0BA5CB1CA2D14C00D1A0B5 /* Sources */,
 				FA0BA5CC1CA2D14C00D1A0B5 /* Frameworks */,
 				FA0BA5CD1CA2D14C00D1A0B5 /* Resources */,
+				FA0BA60D1CA2D72500D1A0B5 /* Embed Frameworks */,
+				FA0BA6181CA2E3F700D1A0B5 /* CopyFiles */,
+				FA0BA6191CA2E40000D1A0B5 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -231,6 +314,8 @@
 			files = (
 				FA0BA5DD1CA2D14C00D1A0B5 /* LaunchScreen.storyboard in Resources */,
 				FA0BA5DA1CA2D14C00D1A0B5 /* Assets.xcassets in Resources */,
+				FA0BA6051CA2D25800D1A0B5 /* ChatFieldCell.xib in Resources */,
+				FA0BA6071CA2D3B700D1A0B5 /* MessageTableCell.xib in Resources */,
 				FA0BA5D81CA2D14C00D1A0B5 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -257,6 +342,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA0BA5D51CA2D14C00D1A0B5 /* ViewController.swift in Sources */,
+				FA0BA6011CA2D1F500D1A0B5 /* ChatFieldCell.swift in Sources */,
+				FA0BA6101CA2D7C000D1A0B5 /* NetworkManager.swift in Sources */,
+				FA0BA6031CA2D23400D1A0B5 /* MessageTableCell.swift in Sources */,
 				FA0BA5D31CA2D14C00D1A0B5 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -399,6 +487,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = P2PUnderdark/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = alexkendall.P2PUnderdark;
@@ -410,6 +503,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = P2PUnderdark/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = alexkendall.P2PUnderdark;

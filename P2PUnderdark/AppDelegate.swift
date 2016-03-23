@@ -1,21 +1,14 @@
-//
-//  AppDelegate.swift
-//  P2PUnderdark
-//
-//  Created by Alexander Harrison on 3/23/16.
-//  Copyright © 2016 Alexander Harrison. All rights reserved.
-//
-
 import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    let chatController = ChatViewController()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        window?.rootViewController = chatController
         return true
     }
 
