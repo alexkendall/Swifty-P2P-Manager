@@ -2,7 +2,7 @@ import Foundation
 import Underdark
 import ReactiveCocoa
 
-class Node: NSObject, UDTransportDelegate {
+class NetworkManager: NSObject, UDTransportDelegate {
     var links: [UDLink] = []
     var peersCount = 0
     var framesCount = 0
@@ -11,6 +11,7 @@ class Node: NSObject, UDTransportDelegate {
     var transport: UDTransport? = nil
     let queue = dispatch_get_main_queue()
     let lastIncommingMessage: MutableProperty<String> = MutableProperty("")
+    let inbox: MutableProperty<[String]> = MutableProperty([])
     override init() {
         super.init()
         var buf : Int64 = 0;
@@ -24,28 +25,24 @@ class Node: NSObject, UDTransportDelegate {
         let transportKinds = [UDTransportKind.Wifi.rawValue, UDTransportKind.Bluetooth.rawValue];
         transport = UDUnderdark.configureTransportWithAppId(appId, nodeId: nodeId, delegate: self, queue: queue, kinds: transportKinds)
         transport?.start()
-        
         lastIncommingMessage.signal
-            .observeNext{_ in
-                print("Last incomming message changed to \(self.lastIncommingMessage.value)")
-            }
+            .observeNext {self.inbox.value.append($0)}
     }
     func broadcastFrame(frameData: NSData) {
-        print("attempting to broadcast frane")
         if !links.isEmpty {
             ++framesCount
+            print("Sending frames to connected users...")
             for link in links {
                 link.sendFrame(frameData)
             }
         } else {
-            print("link array is empty")
+            print("Link array is empty, not sending data...")
         }
     }
     // MARK: Delegate
     func transport(transport: UDTransport!, link: UDLink!, didReceiveFrame frameData: NSData!) {
         ++framesCount
         let str = String(data: frameData, encoding: NSUTF8StringEncoding) ?? ""
-        print(str)
         lastIncommingMessage.value = str
         print("did recieve frame with value \(str)")
     }
@@ -53,10 +50,10 @@ class Node: NSObject, UDTransportDelegate {
         print(link)
         links.append(link)
         ++peersCount
-        print("connected to user")
+        print("connected to user...")
     }
     func transport(transport: UDTransport!, linkDisconnected link: UDLink!) {
         --peersCount
-        print("disconnected from user")
+        print("Disconnected from user...")
     }
 }

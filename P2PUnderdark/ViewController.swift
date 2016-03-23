@@ -8,8 +8,7 @@ class ChatViewController: UITableViewController {
 
     let chatFieldCellId = "chatFieldCellId"
     let messageTableId = "messageTableId"
-    let node = Node()
-    var messages: MutableProperty<[String]> = MutableProperty([String]())
+    let networkManager = NetworkManager()
     var text: MutableProperty<String> = MutableProperty("")
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,26 +16,19 @@ class ChatViewController: UITableViewController {
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nil, bundle: nil)
         registerCells()
-        configureRac()
     }
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         registerCells()
-        configureRac()
     }
     override init(style: UITableViewStyle) {
         super.init(style: style)
         registerCells()
-        configureRac()
-    }
-    func configureRac() {
-        node.lastIncommingMessage.signal
-            .observeNext{self.messages.value.append($0)}
     }
     func sendFrames() {
         print("sennding frame")
         let data = text.value.dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
-        node.broadcastFrame(data)
+        networkManager.broadcastFrame(data)
     }
     func registerCells() {
         tableView.registerNib(UINib(nibName: "ChatFieldCell", bundle: nil), forCellReuseIdentifier: chatFieldCellId)
@@ -60,6 +52,7 @@ class ChatViewController: UITableViewController {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier(chatFieldCellId, forIndexPath: indexPath) as? ChatFieldCell ?? ChatFieldCell()
             cell.sendButton.addTarget(self, action: "sendFrames", forControlEvents: .TouchUpInside)
+            cell.selectionStyle = .None
             self.text <~ cell.chatField.rac_textSignal()
                 .toSignalProducer()
                 .map{$0 as? String}
@@ -68,9 +61,13 @@ class ChatViewController: UITableViewController {
             return cell
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier(messageTableId, forIndexPath: indexPath) as? MessageTableCell ?? MessageTableCell()
-            cell.configureRac(messages.signal)
+            cell.configureRac(networkManager.inbox.signal)
+            cell.selectionStyle = .None
             return cell
         }
+    }
+    override func prefersStatusBarHidden() -> Bool {
+        return true
     }
 }
 
