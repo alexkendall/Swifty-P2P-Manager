@@ -1,0 +1,6 @@
+framework module Google_Material_Design_Icons_Swift {
+  umbrella header "Google-Material-Design-Icons-Swift-umbrella.h"
+
+  export *
+  module * { export * }
+}

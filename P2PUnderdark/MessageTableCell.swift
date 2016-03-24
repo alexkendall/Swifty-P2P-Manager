@@ -21,6 +21,7 @@ class MessageTableCell: UITableViewCell, UITableViewDataSource, UITableViewDeleg
         table.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellReuseId)
         table.delegate = self
         table.dataSource = self
+        table.separatorStyle = .None
     }
     // MARK: Data Source
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -29,6 +30,12 @@ class MessageTableCell: UITableViewCell, UITableViewDataSource, UITableViewDeleg
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellReuseId, forIndexPath: indexPath) as UITableViewCell ?? UITableViewCell()
         cell.textLabel?.text = messages.value[indexPath.row]
+        cell.selectionStyle = .None
+        if indexPath.row % 2 == 0 {
+            cell.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1.0)
+        } else {
+            cell.backgroundColor = .whiteColor()
+        }
         return cell
     }
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {

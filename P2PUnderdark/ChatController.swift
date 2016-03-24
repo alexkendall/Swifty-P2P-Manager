@@ -8,8 +8,7 @@ class ChatViewController: UITableViewController {
     let chatFieldCellId = "chatFieldCellId"
     let messageTableId = "messageTableId"
     let hostCellId = "hostCellId"
-    let voteCellId = "VoteCellId"
-    let networkManager = NetworkManager()
+    var networkManager: NetworkManager!
     var text: MutableProperty<String> = MutableProperty("")
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,29 +27,26 @@ class ChatViewController: UITableViewController {
     }
     func sendFrames() {
         print("sennding frame")
-        let data = text.value.dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
-        networkManager.broadcastFrame(data)
+        networkManager.broadcastFrame(text.value)
     }
     func registerCells() {
         tableView.registerNib(UINib(nibName: "ChatFieldCell", bundle: nil), forCellReuseIdentifier: chatFieldCellId)
         tableView.registerNib(UINib(nibName: "MessageTableCell", bundle: nil), forCellReuseIdentifier: messageTableId)
         tableView.registerNib(UINib(nibName: "HostCell", bundle: nil), forCellReuseIdentifier: hostCellId)
-         tableView.registerNib(UINib(nibName: "VoteCell", bundle: nil), forCellReuseIdentifier: voteCellId)
+        networkManager = NetworkManager(inMode: .Client)
     }
     func clearInbox() {
         networkManager.clearInbox()
     }
     // MARK: DATA SOURCE
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 2
     }
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.row == 0 {
             return 60.0
-        } else if indexPath.row == 1 {
-            return 120.0
         } else {
-            return self.view.bounds.height - 160.0
+            return self.view.bounds.height - 60.0 - tabBarController!.tabBar.bounds.height
         }
     }
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -65,12 +61,7 @@ class ChatViewController: UITableViewController {
                 .ignoreNil()
                 .flatMapError { _ in SignalProducer<String, NoError>.empty}
             return cell
-        } else if indexPath.row == 1 {
-                let cell = tableView.dequeueReusableCellWithIdentifier(voteCellId, forIndexPath: indexPath) as? VoteCell ?? VoteCell()
-                cell.configureCell()
-                cell.selectionStyle = .None
-                return cell
-        } else {
+        }  else {
             let cell = tableView.dequeueReusableCellWithIdentifier(messageTableId, forIndexPath: indexPath) as? MessageTableCell ?? MessageTableCell()
             cell.configureRac(networkManager.inbox.signal)
             cell.selectionStyle = .None

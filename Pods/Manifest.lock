@@ -1,0 +1,13 @@
+PODS:
+  - Alamofire (3.2.1)
+  - Google-Material-Design-Icons-Swift (1.0.1)
+
+DEPENDENCIES:
+  - Alamofire (~> 3.0)
+  - Google-Material-Design-Icons-Swift (~> 1.0.1)
+
+SPEC CHECKSUMS:
+  Alamofire: f11d8624a05f5d39e0c99309b3e600a3ba64298a
+  Google-Material-Design-Icons-Swift: ff587db57d713061f66b8457229d1af2cae84c56
+
+COCOAPODS: 0.39.0

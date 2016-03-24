@@ -17,6 +17,17 @@ public extension UIButton {
             setTitle(icon.text, forState: state)
         }
     }
+    func setGMDIcon(icon: GMDType, size:CGFloat, forState state: UIControlState) {
+        
+        if let titleLabel = titleLabel {
+            
+            FontLoader.loadFontIfNeeded()
+            let font = UIFont(name: GMDStruct.FontName, size: size)
+            assert(font != nil, GMDStruct.ErrorAnnounce)
+            titleLabel.font = font!
+            setTitle(icon.text, forState: state)
+        }
+    }
 }
 
 public extension UILabel {
