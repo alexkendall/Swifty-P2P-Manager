@@ -39,6 +39,10 @@
 		FA7F1EBB1CA4274B0014AD3C /* ConnectionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7F1EBA1CA4274B0014AD3C /* ConnectionsController.swift */; };
 		FA7F1EBE1CA42B7D0014AD3C /* HeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7F1EBD1CA42B7D0014AD3C /* HeaderCell.swift */; };
 		FA7F1EC01CA42B9F0014AD3C /* HeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA7F1EBF1CA42B9F0014AD3C /* HeaderCell.xib */; };
+		FAE8AB111CA4625D00264F31 /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE8AB101CA4625D00264F31 /* UserCell.xib */; };
+		FAE8AB131CA4632400264F31 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE8AB121CA4632400264F31 /* UserCell.swift */; };
+		FAE8AB151CA463BD00264F31 /* UserTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE8AB141CA463BD00264F31 /* UserTableCell.swift */; };
+		FAE8AB171CA463E400264F31 /* UserTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE8AB161CA463E400264F31 /* UserTableCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -132,6 +136,10 @@
 		FA7F1EBA1CA4274B0014AD3C /* ConnectionsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionsController.swift; sourceTree = "<group>"; };
 		FA7F1EBD1CA42B7D0014AD3C /* HeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderCell.swift; sourceTree = "<group>"; };
 		FA7F1EBF1CA42B9F0014AD3C /* HeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeaderCell.xib; sourceTree = "<group>"; };
+		FAE8AB101CA4625D00264F31 /* UserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserCell.xib; sourceTree = "<group>"; };
+		FAE8AB121CA4632400264F31 /* UserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
+		FAE8AB141CA463BD00264F31 /* UserTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTableCell.swift; sourceTree = "<group>"; };
+		FAE8AB161CA463E400264F31 /* UserTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserTableCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -254,6 +262,10 @@
 				FA0BA6221CA314DB00D1A0B5 /* HostCell.swift */,
 				FA7F1EBD1CA42B7D0014AD3C /* HeaderCell.swift */,
 				FA7F1EBF1CA42B9F0014AD3C /* HeaderCell.xib */,
+				FAE8AB101CA4625D00264F31 /* UserCell.xib */,
+				FAE8AB121CA4632400264F31 /* UserCell.swift */,
+				FAE8AB141CA463BD00264F31 /* UserTableCell.swift */,
+				FAE8AB161CA463E400264F31 /* UserTableCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -392,6 +404,8 @@
 				FA0BA5DA1CA2D14C00D1A0B5 /* Assets.xcassets in Resources */,
 				FA0BA6051CA2D25800D1A0B5 /* ChatFieldCell.xib in Resources */,
 				FA0BA6211CA3130D00D1A0B5 /* HostCell.xib in Resources */,
+				FAE8AB171CA463E400264F31 /* UserTableCell.xib in Resources */,
+				FAE8AB111CA4625D00264F31 /* UserCell.xib in Resources */,
 				FA0BA6071CA2D3B700D1A0B5 /* MessageTableCell.xib in Resources */,
 				FA0BA5D81CA2D14C00D1A0B5 /* Main.storyboard in Resources */,
 				FA4E09A81CA32A77008340E2 /* GMDIcons.ttf in Resources */,
@@ -476,6 +490,8 @@
 				FA7F1EBE1CA42B7D0014AD3C /* HeaderCell.swift in Sources */,
 				FA0BA5D31CA2D14C00D1A0B5 /* AppDelegate.swift in Sources */,
 				FA7F1EB91CA4250D0014AD3C /* HostClientController.swift in Sources */,
+				FAE8AB151CA463BD00264F31 /* UserTableCell.swift in Sources */,
+				FAE8AB131CA4632400264F31 /* UserCell.swift in Sources */,
 				FA0BA6231CA314DB00D1A0B5 /* HostCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

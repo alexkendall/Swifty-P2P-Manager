@@ -4,11 +4,12 @@ import ReactiveCocoa
 import enum Result.NoError
 public typealias NoError = Result.NoError
 
+var networkManager: NetworkManager = NetworkManager(inMode: .Client)
+
 class ChatViewController: UITableViewController {
     let chatFieldCellId = "chatFieldCellId"
     let messageTableId = "messageTableId"
     let hostCellId = "hostCellId"
-    var networkManager: NetworkManager!
     var text: MutableProperty<String> = MutableProperty("")
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -13,13 +13,11 @@ class HostCell: UITableViewCell {
     func selectClient() {
         clientButton.backgroundColor = .redColor()
         hostButton.backgroundColor = .lightGrayColor()
-        chatController.networkManager = nil
-        chatController.networkManager = NetworkManager(inMode: .Client)
+        networkManager = NetworkManager(inMode: .Client)
     }
     func selectHost() {
         hostButton.backgroundColor = .redColor()
         clientButton.backgroundColor = .lightGrayColor()
-        chatController.networkManager = nil
-        chatController.networkManager = NetworkManager(inMode: .Host)
+        networkManager = NetworkManager(inMode: .Host)
     }
 }

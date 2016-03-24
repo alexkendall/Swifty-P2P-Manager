@@ -18,7 +18,7 @@ class NetworkManager: NSObject, UDTransportDelegate {
     let queue = dispatch_get_main_queue()
     let lastIncommingMessage: MutableProperty<String> = MutableProperty("")
     let inbox: MutableProperty<[String]> = MutableProperty([])
-    var connectedUsers = [User]()
+    var connectedUsers: MutableProperty<[User]> = MutableProperty([User]())
     required public init(inMode: NetworkMode) {
         super.init()
         mode = inMode
@@ -69,11 +69,11 @@ class NetworkManager: NSObject, UDTransportDelegate {
         } else {
             // do something with message
         }
-        for var i = 0; i < connectedUsers.count; ++i {
-            connectedUsers[i].printInfo()
+        for var i = 0; i < connectedUsers.value.count; ++i {
+            connectedUsers.value[i].printInfo()
             
         }
-        print("number of users \(connectedUsers.count)")
+        print("number of users \(connectedUsers.value.count)")
     }
     
     public func transport(transport: UDTransport!, linkConnected link: UDLink!) {
@@ -92,25 +92,30 @@ class NetworkManager: NSObject, UDTransportDelegate {
 
     // MARK: Provate functions
     func removeUser(user: User) {
-        for var i = 0; i < connectedUsers.count; ++i {
-            if user.id == connectedUsers[i].id {
-                connectedUsers.removeAtIndex(i)
+        for var i = 0; i < connectedUsers.value.count; ++i {
+            if user.id == connectedUsers.value[i].id {
+                connectedUsers.value.removeAtIndex(i)
             }
         }
     }
     func addUser(user: User) {
-        for var i = 0; i < connectedUsers.count; ++i {
-            if user.id == connectedUsers[i].id {
-                connectedUsers[i].mode = user.mode
+        for var i = 0; i < connectedUsers.value.count; ++i {
+            if user.id == connectedUsers.value[i].id {
+                connectedUsers.value[i].mode = user.mode
                 return
             }
         }
-        connectedUsers.append(user)
+        connectedUsers.value.append(user)
     }
     func removeLink(link: UDLink) {
         for var i = 0; i < links.count; ++i {
             if link.nodeId == links[i].nodeId {
                 links.removeAtIndex(i)
+            }
+        }
+        for var i = 0; i < connectedUsers.value.count; ++i {
+            if connectedUsers.value[i].link.nodeId == link.nodeId {
+                removeUser(connectedUsers.value[i])
             }
         }
     }
