@@ -4,7 +4,7 @@ import ReactiveCocoa
 import enum Result.NoError
 public typealias NoError = Result.NoError
 
-var networkManager: NetworkManager = NetworkManager(inMode: .Client)
+var networkManager: DiscoveryManager = DiscoveryManager(inMode: .Client)
 
 class ChatViewController: UITableViewController {
     let chatFieldCellId = "chatFieldCellId"
@@ -34,7 +34,7 @@ class ChatViewController: UITableViewController {
         tableView.registerNib(UINib(nibName: "ChatFieldCell", bundle: nil), forCellReuseIdentifier: chatFieldCellId)
         tableView.registerNib(UINib(nibName: "MessageTableCell", bundle: nil), forCellReuseIdentifier: messageTableId)
         tableView.registerNib(UINib(nibName: "HostCell", bundle: nil), forCellReuseIdentifier: hostCellId)
-        networkManager = NetworkManager(inMode: .Client)
+        networkManager = DiscoveryManager(inMode: .Client)
     }
     func clearInbox() {
         networkManager.clearInbox()

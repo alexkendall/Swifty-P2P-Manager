@@ -4,6 +4,7 @@ import ReactiveCocoa
 
 class UserTableCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate {
     let users:MutableProperty<[User]> = MutableProperty([User]())
+    let discoverableUsers: MutableProperty<[User]> = MutableProperty([User]())
     let reuseId = "cellResuseid"
     @IBOutlet weak var userTable: UITableView!
     func configureRac(signal: Signal<[User], NoError>) {
@@ -11,22 +12,32 @@ class UserTableCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate
         userTable.delegate = self
         users <~ signal
         users.signal
-            .observeNext{ _ in
+            .observeNext{
                 self.userTable.reloadData()
-                print("reloading data")
+                var discoverable = [User]()
+                for var i = 0; i < $0.count; ++i {
+                    if $0[i].mode == .Host {
+                        discoverable.append($0[i])
+                    }
+                }
+                self.discoverableUsers.value = discoverable
         }
+        discoverableUsers.signal
+            .observeNext {_ in
+                self.userTable.reloadData()
+            }
         userTable.registerNib(UINib(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: reuseId)
     }
     // MARK: Data Source
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(reuseId, forIndexPath: indexPath) as? UserCell ?? UserCell()
-        cell.idLabel.text = users.value[indexPath.row].id
-        cell.typeLabel.text = users.value[indexPath.row].mode.rawValue
+        cell.idLabel.text = discoverableUsers.value[indexPath.row].id
+        cell.typeLabel.text = discoverableUsers.value[indexPath.row].mode.rawValue
         return cell
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         print("USER COUNT RETURNED: \(users.value.count)")
-        return users.value.count
+        return discoverableUsers.value.count
     }
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 100.0

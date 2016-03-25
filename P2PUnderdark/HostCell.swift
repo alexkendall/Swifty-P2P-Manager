@@ -13,11 +13,13 @@ class HostCell: UITableViewCell {
     func selectClient() {
         clientButton.backgroundColor = .redColor()
         hostButton.backgroundColor = .lightGrayColor()
-        networkManager = NetworkManager(inMode: .Client)
+        //networkManager.startScanningAsClient()
+        networkManager = DiscoveryManager(inMode: .Client)
     }
     func selectHost() {
         hostButton.backgroundColor = .redColor()
         clientButton.backgroundColor = .lightGrayColor()
-        networkManager = NetworkManager(inMode: .Host)
+        //networkManager.startAdvertisingAsHost()
+        networkManager = DiscoveryManager(inMode: .Host)
     }
 }
