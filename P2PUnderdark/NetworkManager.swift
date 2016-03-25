@@ -20,6 +20,7 @@ class NetworkManager: NSObject, UDTransportDelegate {
     let inbox: MutableProperty<[String]> = MutableProperty([])
     var connectedUsers: MutableProperty<[User]> = MutableProperty([User]())
     required public init(inMode: NetworkMode) {
+        print("INIT")
         super.init()
         mode = inMode
         var buf : Int64 = 0;
@@ -29,27 +30,37 @@ class NetworkManager: NSObject, UDTransportDelegate {
         if(buf < 0) {
             buf = -buf;
         }
-        nodeId = buf;
+        nodeId = buf
         let transportKinds = [UDTransportKind.Wifi.rawValue, UDTransportKind.Bluetooth.rawValue];
         transport = UDUnderdark.configureTransportWithAppId(appId, nodeId: nodeId, delegate: self, queue: queue, kinds: transportKinds)
         transport?.start()
         lastIncommingMessage.signal
             .observeNext {self.inbox.value.append($0)}
         
+        connectedUsers.signal.observeNext({_ in
+            print("Users value changed")
+        })
+
     }
     deinit {
         transport?.stop()
     }
     func broadcastFrame(text: String) {
         let data = text.dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
+        if !connectedUsers.value.isEmpty {
+            for user in connectedUsers.value {
+                user.link.sendFrame(data)
+            }
+        }
+    }
+    func broadcastType() {
+        let text = mode.rawValue + "_" + UIDevice.currentDevice().identifierForVendor!.UUIDString
+        let data = text.dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
         if !links.isEmpty {
             for link in links {
                 link.sendFrame(data)
             }
         }
-    }
-    func broadcastType() {
-        broadcastFrame(mode.rawValue + "_" + UIDevice.currentDevice().identifierForVendor!.UUIDString)
     }
     func clearInbox() {
         inbox.value = []
@@ -58,7 +69,7 @@ class NetworkManager: NSObject, UDTransportDelegate {
     public func transport(transport: UDTransport!, link: UDLink!, didReceiveFrame frameData: NSData!) {
         let message = String(data: frameData, encoding: NSUTF8StringEncoding) ?? ""
         lastIncommingMessage.value = message
-        print("did recieve frame with value \(message)")
+        print("did recieve frame with value \(message) from link ]\(link.nodeId)")
         if message.containsString("host_") {
             let id = message.stringByReplacingOccurrencesOfString("host_", withString: "")
             addUser(User(_id: id, _link: link, _mode: .Host))
@@ -77,6 +88,13 @@ class NetworkManager: NSObject, UDTransportDelegate {
     }
     
     public func transport(transport: UDTransport!, linkConnected link: UDLink!) {
+        // check if link belongs to prexisting user, if not then add
+        for var i = 0; i < connectedUsers.value.count; ++i {
+            if link.nodeId == connectedUsers.value[i].link.nodeId {
+                return
+            }
+        }
+        
         addLink(link)
         ++peersCount
         print("connected to link..\(link.nodeId)")
@@ -91,23 +109,23 @@ class NetworkManager: NSObject, UDTransportDelegate {
     }
 
     // MARK: Provate functions
-    func removeUser(user: User) {
+    private func removeUser(user: User) {
         for var i = 0; i < connectedUsers.value.count; ++i {
             if user.id == connectedUsers.value[i].id {
                 connectedUsers.value.removeAtIndex(i)
             }
         }
     }
-    func addUser(user: User) {
+    private func addUser(user: User) {
         for var i = 0; i < connectedUsers.value.count; ++i {
             if user.id == connectedUsers.value[i].id {
-                connectedUsers.value[i].mode = user.mode
+                connectedUsers.value[i] = User(_id: user.id, _link: user.link, _mode: user.mode)
                 return
             }
         }
         connectedUsers.value.append(user)
     }
-    func removeLink(link: UDLink) {
+    private func removeLink(link: UDLink) {
         for var i = 0; i < links.count; ++i {
             if link.nodeId == links[i].nodeId {
                 links.removeAtIndex(i)
@@ -119,13 +137,18 @@ class NetworkManager: NSObject, UDTransportDelegate {
             }
         }
     }
-    func addLink(link: UDLink) {
+    private func addLink(link: UDLink) {
+       // if link already in list, return
         for var i = 0; i < links.count; ++i {
             if link.nodeId == links[i].nodeId {
                 return
             }
         }
         links.append(link)
+        print("Links: ")
+        for var i = 0; i < links.count; ++i {
+            print("Link \(links[i].nodeId)")
+        }
     }
 }
 
