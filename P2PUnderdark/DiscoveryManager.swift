@@ -5,20 +5,25 @@ import ReactiveCocoa
 public enum NetworkMode: String {
     case Host = "host"
     case Client = "client"
+    case Peer = "peer"
 }
 var mode: NetworkMode!
 
 public
 class DiscoveryManager: NSObject, UDTransportDelegate {
-    var links: [UDLink] = []
+    // MARK: Public Vars
+    public let peers: MutableProperty<[User]> = MutableProperty([User]())
+    public let usersInRange: MutableProperty<[User]> = MutableProperty([User]())
+    // MARK: Private Vars
+    private var links: [UDLink] = []
     var peersCount = 0
-    var appId: Int32 = 123456
-    var nodeId: Int64 = 0
-    var transport: UDTransport!
-    let queue = dispatch_get_main_queue()
-    let lastIncommingMessage: MutableProperty<String> = MutableProperty("")
-    let inbox: MutableProperty<[String]> = MutableProperty([])
-    var connectedUsers: MutableProperty<[User]> = MutableProperty([User]())
+    private var appId: Int32 = 123456
+    private var nodeId: Int64 = 0
+    private var transport: UDTransport!
+    private let queue = dispatch_get_main_queue()
+    private let lastIncommingMessage: MutableProperty<String> = MutableProperty("")
+    public let inbox: MutableProperty<[String]> = MutableProperty([])
+    private let deviceId = UIDevice.currentDevice().identifierForVendor!.UUIDString
     required public init(inMode: NetworkMode) {
         super.init()
         mode = inMode
@@ -35,11 +40,6 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
         lastIncommingMessage.signal
             .observeNext {self.inbox.value.append($0)}
         transport.start()
-        
-        connectedUsers.signal
-            .observeNext {_ in
-                print("Connected users value changed")
-            }
     }
     deinit {
         transport?.stop()
@@ -48,7 +48,6 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
     public func transport(transport: UDTransport!, link: UDLink!, didReceiveFrame frameData: NSData!) {
         let message = String(data: frameData, encoding: NSUTF8StringEncoding) ?? ""
         lastIncommingMessage.value = message
-        print("did recieve frame with value \(message) from link ]\(link.nodeId)")
         if message.containsString("host_") {
             let id = message.stringByReplacingOccurrencesOfString("host_", withString: "")
             addUser(User(_id: id, _link: link, _mode: .Host))
@@ -56,50 +55,78 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
         } else if message.containsString("client_") {
             let id = message.stringByReplacingOccurrencesOfString("client_", withString: "")
             addUser(User(_id: id, _link: link, _mode: .Client))
-        } else {
-            // do something with message
+        } else if message.containsString("connection_request") {
+            let device = message.stringByReplacingOccurrencesOfString("connection_request_", withString: "")
+            let user = User(_id: device, _link: link, _mode: NetworkMode.Peer)
+            let alertController = UIAlertController()
+            let acceptAction = UIAlertAction(title: "Accept", style: UIAlertActionStyle.Default , handler: {_ in
+                for peer in self.peers.value {
+                    if peer.id == user.id {
+                        return
+                    }
+                }
+                self.peers.value.append(user)
+                print("added peer to peer table")
+                for peer in self.peers.value {
+                    peer.printInfo()
+                }
+                self.authenticateUser(user)
+            })
+            let declineAction = UIAlertAction(title: "Decline", style: UIAlertActionStyle.Cancel, handler: nil)
+            alertController.addAction(acceptAction)
+            alertController.addAction(declineAction)
+            UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
+        } else if message.containsString("allow_") {
+            let userId = message.stringByReplacingOccurrencesOfString("allow_", withString: "")
+            let user = User(_id: userId, _link: link, _mode: NetworkMode.Peer)
+            for peer in self.peers.value {
+                if peer.id == user.id {
+                    return
+                }
+            }
+            self.peers.value.append(user)
+            print("added peer to peer table (allow)")
+            for peer in self.peers.value {
+                peer.printInfo()
+            }
         }
-        for var i = 0; i < connectedUsers.value.count; ++i {
-            connectedUsers.value[i].printInfo()
+        else {
+            print("MESSAGE RECIEVED \(message)")
         }
-        print("number of users \(connectedUsers.value.count)")
     }
     
     public func transport(transport: UDTransport!, linkConnected link: UDLink!) {
         // check if link belongs to prexisting user, if not then add
-        for var i = 0; i < connectedUsers.value.count; ++i {
-            if link.nodeId == connectedUsers.value[i].link.nodeId {
+        for var i = 0; i < usersInRange.value.count; ++i {
+            if link.nodeId == usersInRange.value[i].link.nodeId {
                 return
             }
         }
         addLink(link)
         ++peersCount
-        print("connected to link..\(link.nodeId)")
         broadcastType()
     }
     
     public func transport(transport: UDTransport!, linkDisconnected link: UDLink!) {
         removeLink(link)
         --peersCount
-        print("Disconnected from link...\(link.nodeId)")
-        
     }
     // MARK: Private functions
     private func removeUser(user: User) {
-        for var i = 0; i < connectedUsers.value.count; ++i {
-            if user.id == connectedUsers.value[i].id {
-                connectedUsers.value.removeAtIndex(i)
+        for var i = 0; i < usersInRange.value.count; ++i {
+            if user.id == usersInRange.value[i].id {
+                usersInRange.value.removeAtIndex(i)
             }
         }
     }
     private func addUser(user: User) {
-        for var i = 0; i < connectedUsers.value.count; ++i {
-            if user.id == connectedUsers.value[i].id {
-                connectedUsers.value[i] = user
+        for var i = 0; i < usersInRange.value.count; ++i {
+            if user.id == usersInRange.value[i].id {
+                usersInRange.value[i] = user
                 return
             }
         }
-        connectedUsers.value.append(user)
+        usersInRange.value.append(user)
     }
     private func removeLink(link: UDLink) {
         for var i = 0; i < links.count; ++i {
@@ -107,9 +134,9 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
                 links.removeAtIndex(i)
             }
         }
-        for var i = 0; i < connectedUsers.value.count; ++i {
-            if connectedUsers.value[i].link.nodeId == link.nodeId {
-                removeUser(connectedUsers.value[i])
+        for var i = 0; i < usersInRange.value.count; ++i {
+            if usersInRange.value[i].link.nodeId == link.nodeId {
+                removeUser(usersInRange.value[i])
             }
         }
     }
@@ -121,48 +148,48 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
             }
         }
         links.append(link)
-        print("Links: ")
-        for var i = 0; i < links.count; ++i {
-            print("Link \(links[i].nodeId)")
-        }
     }
-    func broadcastType() {
+    private func broadcastType() {
         let text = mode.rawValue + "_" + UIDevice.currentDevice().identifierForVendor!.UUIDString
         let data = text.dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
         if !links.isEmpty {
             for link in links {
                 link.sendFrame(data)
             }
-        } else {
-            print("Links are empty")
         }
     }
     // MARK: Public Functions
     public func startScanningAsClient() {
         mode = .Client
         broadcastType()
-        print("starting scanning as client for other hosts")
         
     }
     public func startAdvertisingAsHost() {
         mode = .Host
         broadcastType()
-        print("starting advertising as host")
     }
-    func broadcastFrame(text: String) {
+    func sendMessageToPeers(text: String) {
         let data = text.dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
-        if !connectedUsers.value.isEmpty {
-            for user in connectedUsers.value {
-                user.link.sendFrame(data)
+        if !peers.value.isEmpty {
+            for peer in peers.value {
+                peer.link.sendFrame(data)
             }
         }
     }
     func clearInbox() {
         inbox.value = []
     }
+    func askToConnectToPeer(user: User) {
+        let data = ("connection_request_\(deviceId)").dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
+        user.link.sendFrame(data)
+    }
+    func authenticateUser(user: User) {
+        let data = ("allow_\(deviceId)").dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
+        user.link.sendFrame(data)
+    }
 }
 
-class User {
+public class User {
     var link:UDLink!
     var mode: NetworkMode!
     var id: String

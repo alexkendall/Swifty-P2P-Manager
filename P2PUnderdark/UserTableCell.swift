@@ -36,11 +36,14 @@ class UserTableCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate
         return cell
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("USER COUNT RETURNED: \(users.value.count)")
         return discoverableUsers.value.count
     }
+    // MARK: Delegate
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 100.0
+    }
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        networkManager.askToConnectToPeer(discoverableUsers.value[indexPath.row])
     }
 
 }
