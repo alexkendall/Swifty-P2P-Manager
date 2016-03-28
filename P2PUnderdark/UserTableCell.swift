@@ -18,7 +18,7 @@ class UserTableCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     self.userTable.reloadData()
                 })
-                print("reloading data")
+                print("reloading data...")
         }
         userTable.registerNib(UINib(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: reuseId)
         userTable.separatorStyle = .None
@@ -39,6 +39,7 @@ class UserTableCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate
         return cell
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("hosts count \(hosts.value.count)")
         return hosts.value.count
     }
     // MARK: Delegate

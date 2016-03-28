@@ -3,7 +3,7 @@ import Underdark
 import ReactiveCocoa
 
 
-
+var loopNodes = [Int64]()
 public class NetworkManager: NSObject, UDTransportDelegate {
     // MARK: Public Vars
     public let usersInRange: MutableProperty<[User]> = MutableProperty([User]())
@@ -29,6 +29,8 @@ public class NetworkManager: NSObject, UDTransportDelegate {
             buf = -buf;
         }
         nodeId = buf
+        loopNodes.append(buf)
+        print("NODE ID: \(nodeId)")
         let transportKinds = [UDTransportKind.Wifi.rawValue, UDTransportKind.Bluetooth.rawValue];
         transport = UDUnderdark.configureTransportWithAppId(appId, nodeId: nodeId, delegate: self, queue: queue, kinds: transportKinds)
         lastIncommingMessage.signal
@@ -44,7 +46,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
                     }
                 }
                 self.connectedPeers.value = hostList
-                print("USER COUNT: \(self.usersInRange.value.count)")
+                print(userList)
             }
     }
     deinit {
@@ -82,7 +84,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
                     self.usersInRange.value.removeAtIndex(i)
                 }
             }
-            self.usersInRange.value.append(user)
+            self.addUser(user)
             // notify other use this user has connected to the other
             self.notifyConnected(user)
         } else if message.containsString("connected_") {
@@ -93,7 +95,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
                     self.usersInRange.value.removeAtIndex(i)
                 }
             }
-            self.usersInRange.value.append(user)
+            self.addUser(user)
         }
         else {
             // handle message
@@ -103,7 +105,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     public func transport(transport: UDTransport!, linkConnected link: UDLink!) {
         // check if link belongs to prexisting user, if not then add
         for var i = 0; i < usersInRange.value.count; ++i {
-            if link.nodeId == usersInRange.value[i].link.nodeId {
+            if link.nodeId == usersInRange.value[i].link.nodeId || link.nodeId == nodeId {
                 return
             }
         }
@@ -122,13 +124,16 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         }
     }
     private func addUser(user: User) {
-        for var i = 0; i < usersInRange.value.count; ++i {
-            if user.id == usersInRange.value[i].id {
-                usersInRange.value[i] = user
-                return
+        dispatch_async(dispatch_get_main_queue(), {
+            for var i = 0; i < self.usersInRange.value.count; ++i {
+                if user.id == self.usersInRange.value[i].id {
+                    self.usersInRange.value[i] = user
+                    return
+                }
             }
-        }
-        usersInRange.value.append(user)
+            self.usersInRange.value.append(user)
+            self.cleanMesh()
+        })
     }
     private func removeLink(link: UDLink) {
         for var i = 0; i < links.count; ++i {
@@ -147,9 +152,12 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         for var i = 0; i < links.count; ++i {
             if link.nodeId == links[i].nodeId {
                 return
+            } else if link.nodeId == nodeId {
+                print("ERROR: this shouldn't happen")
             }
         }
         links.append(link)
+        print("Number of links: \(links.count)")
     }
     public func broadcastType() {
         let text = mode.rawValue + "_" + UIDevice.currentDevice().identifierForVendor!.UUIDString
@@ -197,5 +205,19 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     func askToConnectToPeer(user: User) {
         let data = ("connection_request_\(deviceId)").dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
         user.link.sendFrame(data)
+    }
+    func cleanMesh() {
+        dispatch_async(dispatch_get_main_queue(), {
+            for var i = 0; i < self.self.usersInRange.value.count; ++i {
+                for var j = 0; j < loopNodes.count; ++j {
+                    if self.usersInRange.value[i].link.nodeId == loopNodes[j] {
+                        print("Attemting to clean mesh network of user with id \(self.usersInRange.value[i].id)")
+                        self.usersInRange.value.removeAtIndex(i)
+                        print("Count: \(self.usersInRange.value.count)")
+                        break
+                    }
+                }
+            }
+        })
     }
 }
