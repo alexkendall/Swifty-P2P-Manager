@@ -43,6 +43,7 @@
 		FAE8AB131CA4632400264F31 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE8AB121CA4632400264F31 /* UserCell.swift */; };
 		FAE8AB151CA463BD00264F31 /* UserTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE8AB141CA463BD00264F31 /* UserTableCell.swift */; };
 		FAE8AB171CA463E400264F31 /* UserTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAE8AB161CA463E400264F31 /* UserTableCell.xib */; };
+		FAE8AB191CA578CE00264F31 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE8AB181CA578CE00264F31 /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -140,6 +141,7 @@
 		FAE8AB121CA4632400264F31 /* UserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		FAE8AB141CA463BD00264F31 /* UserTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTableCell.swift; sourceTree = "<group>"; };
 		FAE8AB161CA463E400264F31 /* UserTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserTableCell.xib; sourceTree = "<group>"; };
+		FAE8AB181CA578CE00264F31 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,8 +208,10 @@
 		FA0BA5D11CA2D14C00D1A0B5 /* P2PUnderdark */ = {
 			isa = PBXGroup;
 			children = (
+				FA3AC95A1CA97B8300BA84F2 /* Icons */,
 				FA0BA5D21CA2D14C00D1A0B5 /* AppDelegate.swift */,
 				FA0BA60F1CA2D7C000D1A0B5 /* NetworkManager.swift */,
+				FAE8AB181CA578CE00264F31 /* User.swift */,
 				FA7F1EBC1CA42B650014AD3C /* GoogleMaterials */,
 				FA7F1EB71CA424E50014AD3C /* ViewControllers */,
 				FA0BA61E1CA312DD00D1A0B5 /* Cells */,
@@ -254,6 +258,8 @@
 		FA0BA61E1CA312DD00D1A0B5 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				FAE8AB141CA463BD00264F31 /* UserTableCell.swift */,
+				FAE8AB161CA463E400264F31 /* UserTableCell.xib */,
 				FA0BA6001CA2D1F500D1A0B5 /* ChatFieldCell.swift */,
 				FA0BA6041CA2D25800D1A0B5 /* ChatFieldCell.xib */,
 				FA0BA6021CA2D23400D1A0B5 /* MessageTableCell.swift */,
@@ -264,10 +270,15 @@
 				FA7F1EBF1CA42B9F0014AD3C /* HeaderCell.xib */,
 				FAE8AB101CA4625D00264F31 /* UserCell.xib */,
 				FAE8AB121CA4632400264F31 /* UserCell.swift */,
-				FAE8AB141CA463BD00264F31 /* UserTableCell.swift */,
-				FAE8AB161CA463E400264F31 /* UserTableCell.xib */,
 			);
 			name = Cells;
+			sourceTree = "<group>";
+		};
+		FA3AC95A1CA97B8300BA84F2 /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Icons;
 			sourceTree = "<group>";
 		};
 		FA7F1EB71CA424E50014AD3C /* ViewControllers */ = {
@@ -481,6 +492,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAE8AB191CA578CE00264F31 /* User.swift in Sources */,
 				FA0BA5D51CA2D14C00D1A0B5 /* ChatController.swift in Sources */,
 				FA0BA6011CA2D1F500D1A0B5 /* ChatFieldCell.swift in Sources */,
 				FA4E09A41CA3270A008340E2 /* GMDIcon.swift in Sources */,
@@ -642,6 +654,7 @@
 				);
 				INFOPLIST_FILE = P2PUnderdark/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = alexkendall.P2PUnderdark;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -659,6 +672,7 @@
 				);
 				INFOPLIST_FILE = P2PUnderdark/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = alexkendall.P2PUnderdark;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

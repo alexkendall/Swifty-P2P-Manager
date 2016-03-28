@@ -12,23 +12,23 @@
             <rect key="frame" x="0.0" y="0.0" width="428" height="72"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cJ3-o6-GTo" id="cSc-Ht-ed2">
-                <rect key="frame" x="0.0" y="0.0" width="428" height="71.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="428" height="71"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9En-zi-t3A">
                         <rect key="frame" x="9" y="8" width="128" height="48"/>
-                        <color key="backgroundColor" red="0.86399147730000003" green="0.86399147730000003" blue="0.86399147730000003" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="48" id="BeZ-T4-7vh"/>
                             <constraint firstAttribute="width" constant="128" id="FM1-aH-w7c"/>
                         </constraints>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                         <state key="normal" title="HOST">
                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         </state>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y5G-1M-HVn">
                         <rect key="frame" x="292" y="8" width="128" height="48"/>
-                        <color key="backgroundColor" red="0.85369898430000002" green="0.85369898430000002" blue="0.85369898430000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                         <state key="normal" title="CLIENT">
                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         </state>

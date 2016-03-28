@@ -4,5 +4,6 @@ import UIKit
 class UserCell: UITableViewCell {
     @IBOutlet weak var idLabel: UILabel!
     @IBOutlet weak var typeLabel: UILabel!
+    @IBOutlet weak var wifiIcon: UIButton!
     
 }

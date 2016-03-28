@@ -51,7 +51,8 @@ class ConnectionsController: UITableViewController {
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier(userTableCellId, forIndexPath: indexPath) as? UserTableCell ?? UserTableCell()
             cell.selectionStyle = .None
-            cell.configureRac(networkManager.connectedUsers.signal)
+            cell.configureRac(networkManager.usersInRange.signal, hostSignal: networkManager.connectedPeers.signal)
+            cell.discoverableUsers.value = networkManager.usersInRange.value
             return cell
         }
     }

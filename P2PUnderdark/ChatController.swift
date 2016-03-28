@@ -28,7 +28,7 @@ class ChatViewController: UITableViewController {
     }
     func sendFrames() {
         print("sennding frame")
-        networkManager.broadcastFrame(text.value)
+        networkManager.sendMessageToPeers(text.value)
     }
     func registerCells() {
         tableView.registerNib(UINib(nibName: "ChatFieldCell", bundle: nil), forCellReuseIdentifier: chatFieldCellId)
@@ -37,6 +37,7 @@ class ChatViewController: UITableViewController {
         networkManager = NetworkManager(inMode: .Client)
     }
     func clearInbox() {
+        print("should clear")
         networkManager.clearInbox()
     }
     // MARK: DATA SOURCE

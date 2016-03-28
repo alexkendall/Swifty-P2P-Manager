@@ -13,6 +13,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         window?.rootViewController = tabController
         tabController.viewControllers = [chatController, connectionsController]
+        chatController.tabBarItem = UITabBarItem(title: "Log", image: UIImage(named: "logIcon"), tag: 0)
+        connectionsController.tabBarItem = UITabBarItem(title: "Connect", image: UIImage(named: "connectIcon"), tag: 1)
+        tabController.tabBar.tintColor = .blackColor()
         return true
     }
 

@@ -11,13 +11,13 @@ class HostCell: UITableViewCell {
         clientButton.addTarget(self, action: "selectClient", forControlEvents: .TouchDown)
     }
     func selectClient() {
-        clientButton.backgroundColor = .redColor()
-        hostButton.backgroundColor = .lightGrayColor()
-        networkManager = NetworkManager(inMode: .Client)
+        clientButton.setTitleColor(UIView().tintColor, forState: .Normal)
+        hostButton.setTitleColor(.grayColor(), forState: .Normal)
+        networkManager.startScanningAsClient()
     }
     func selectHost() {
-        hostButton.backgroundColor = .redColor()
-        clientButton.backgroundColor = .lightGrayColor()
-        networkManager = NetworkManager(inMode: .Host)
+        clientButton.setTitleColor(.grayColor(), forState: .Normal)
+        hostButton.setTitleColor(UIView().tintColor, forState: .Normal)
+        networkManager.startAdvertisingAsHost()
     }
 }
