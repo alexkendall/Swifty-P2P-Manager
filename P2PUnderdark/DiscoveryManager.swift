@@ -15,7 +15,6 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
     public let usersInRange: MutableProperty<[User]> = MutableProperty([User]())
     // MARK: Private Vars
     private var links: [UDLink] = []
-    var peersCount = 0
     private var appId: Int32 = 123456
     private var nodeId: Int64 = 0
     private var transport: UDTransport!
@@ -78,7 +77,7 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
             self.notifyConnected(user)
         } else if message.containsString("connected_") {
             let userId = message.stringByReplacingOccurrencesOfString("connected_", withString: "")
-            let user = User(_id: userId, _link: link, _mode: NetworkMode.Client, isConnected: true)
+            let user = User(_id: userId, _link: link, _mode: NetworkMode.Host, isConnected: true)
             for var i = 0; i < usersInRange.value.count; ++i {
                 if user.id == self.usersInRange.value[i].id {
                     self.usersInRange.value.removeAtIndex(i)
@@ -98,13 +97,13 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
             }
         }
         addLink(link)
-        ++peersCount
         broadcastType()
+         print("link connected")
     }
     
     public func transport(transport: UDTransport!, linkDisconnected link: UDLink!) {
+        print("Link disconnected")
         removeLink(link)
-        --peersCount
     }
     // MARK: Private functions
     private func removeUser(user: User) {

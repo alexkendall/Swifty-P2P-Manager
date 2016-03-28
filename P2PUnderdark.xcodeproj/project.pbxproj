@@ -208,6 +208,7 @@
 		FA0BA5D11CA2D14C00D1A0B5 /* P2PUnderdark */ = {
 			isa = PBXGroup;
 			children = (
+				FA3AC95A1CA97B8300BA84F2 /* Icons */,
 				FA0BA5D21CA2D14C00D1A0B5 /* AppDelegate.swift */,
 				FA0BA60F1CA2D7C000D1A0B5 /* DiscoveryManager.swift */,
 				FAE8AB181CA578CE00264F31 /* User.swift */,
@@ -271,6 +272,13 @@
 				FAE8AB121CA4632400264F31 /* UserCell.swift */,
 			);
 			name = Cells;
+			sourceTree = "<group>";
+		};
+		FA3AC95A1CA97B8300BA84F2 /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Icons;
 			sourceTree = "<group>";
 		};
 		FA7F1EB71CA424E50014AD3C /* ViewControllers */ = {
