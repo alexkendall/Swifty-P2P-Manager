@@ -43,6 +43,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
                 for user in userList {
                     if user.mode == .Host || user.connected {
                         hostList.append(user)
+                        print("added host to list")
                     }
                 }
                 self.connectedPeers.value = hostList
