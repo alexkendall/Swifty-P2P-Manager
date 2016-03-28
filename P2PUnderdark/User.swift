@@ -5,6 +5,7 @@ import Underdark
 public enum NetworkMode: String {
     case Host = "host"
     case Client = "client"
+    case Offline = "offline"
 }
 
 public class User {

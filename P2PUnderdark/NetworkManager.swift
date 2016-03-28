@@ -2,7 +2,6 @@ import Foundation
 import Underdark
 import ReactiveCocoa
 
-
 var loopNodes = [Int64]()
 public class NetworkManager: NSObject, UDTransportDelegate {
     // MARK: Public Vars
@@ -17,9 +16,11 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     private let queue = dispatch_get_main_queue()
     private let lastIncommingMessage: MutableProperty<String> = MutableProperty("")
     private let deviceId = UIDevice.currentDevice().identifierForVendor!.UUIDString
+    private var timer: NSTimer = NSTimer()
     var mode: NetworkMode!
     required public init(inMode: NetworkMode) {
         super.init()
+
         mode = inMode
         var buf : Int64 = 0;
         repeat {
@@ -30,7 +31,6 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         }
         nodeId = buf
         loopNodes.append(buf)
-        print("NODE ID: \(nodeId)")
         let transportKinds = [UDTransportKind.Wifi.rawValue, UDTransportKind.Bluetooth.rawValue];
         transport = UDUnderdark.configureTransportWithAppId(appId, nodeId: nodeId, delegate: self, queue: queue, kinds: transportKinds)
         lastIncommingMessage.signal
@@ -46,7 +46,6 @@ public class NetworkManager: NSObject, UDTransportDelegate {
                     }
                 }
                 self.connectedPeers.value = hostList
-                print(userList)
             }
     }
     deinit {
@@ -75,7 +74,9 @@ public class NetworkManager: NSObject, UDTransportDelegate {
             let declineAction = UIAlertAction(title: "Decline", style: UIAlertActionStyle.Cancel, handler: nil)
             alertController.addAction(acceptAction)
             alertController.addAction(declineAction)
-            UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
+            dispatch_async(dispatch_get_main_queue(), {
+                    UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
+            })
         } else if message.containsString("allow_") {
             let userId = message.stringByReplacingOccurrencesOfString("allow_", withString: "")
             let user = User(_id: userId, _link: link, _mode: NetworkMode.Host, isConnected: true)
@@ -93,13 +94,15 @@ public class NetworkManager: NSObject, UDTransportDelegate {
             for var i = 0; i < usersInRange.value.count; ++i {
                 if user.id == self.usersInRange.value[i].id {
                     self.usersInRange.value.removeAtIndex(i)
+                } else {
+                    
                 }
             }
             self.addUser(user)
         }
         else {
             // handle message
-            print("MESSAGE RECIEVED \(message)")
+            print("recieved \(message)")
         }
     }
     public func transport(transport: UDTransport!, linkConnected link: UDLink!) {
@@ -127,8 +130,13 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         dispatch_async(dispatch_get_main_queue(), {
             for var i = 0; i < self.usersInRange.value.count; ++i {
                 if user.id == self.usersInRange.value[i].id {
-                    self.usersInRange.value[i] = user
-                    return
+                    if !self.usersInRange.value[i].connected && user.connected {
+                        self.usersInRange.value[i] = user
+                        self.cleanMesh()
+                        return
+                    } else {
+                        return
+                    }
                 }
             }
             self.usersInRange.value.append(user)
@@ -152,12 +160,9 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         for var i = 0; i < links.count; ++i {
             if link.nodeId == links[i].nodeId {
                 return
-            } else if link.nodeId == nodeId {
-                print("ERROR: this shouldn't happen")
             }
         }
         links.append(link)
-        print("Number of links: \(links.count)")
     }
     public func broadcastType() {
         let text = mode.rawValue + "_" + UIDevice.currentDevice().identifierForVendor!.UUIDString
@@ -177,17 +182,37 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         let data = ("connected_\(deviceId)").dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
         user.link.sendFrame(data)
     }
+    private func cleanMesh() {
+        dispatch_async(dispatch_get_main_queue(), {
+            for var i = 0; i < self.self.usersInRange.value.count; ++i {
+                for var j = 0; j < loopNodes.count; ++j {
+                    if self.usersInRange.value[i].link.nodeId == loopNodes[j] {
+                        print("Attemting to clean mesh network of user with id \(self.usersInRange.value[i].id)")
+                        self.usersInRange.value.removeAtIndex(i)
+                        print("Count: \(self.usersInRange.value.count)")
+                        break
+                    }
+                }
+            }
+        })
+    }
     // MARK: Public Functions
     public func startScanningAsClient() {
         usersInRange.value = []
         mode = .Client
         broadcastType()
-        
+        timer.invalidate()
     }
     public func startAdvertisingAsHost() {
         usersInRange.value = []
         mode = .Host
         broadcastType()
+        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "broadcastType", userInfo: nil, repeats: true)  // start advertising
+    }
+    public func goOffline() {
+        usersInRange.value = []
+        mode = .Offline
+        timer.invalidate()
     }
     func sendMessageToPeers(text: String) {
         let data = text.dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
@@ -203,21 +228,9 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         inbox.value = []
     }
     func askToConnectToPeer(user: User) {
-        let data = ("connection_request_\(deviceId)").dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
-        user.link.sendFrame(data)
-    }
-    func cleanMesh() {
-        dispatch_async(dispatch_get_main_queue(), {
-            for var i = 0; i < self.self.usersInRange.value.count; ++i {
-                for var j = 0; j < loopNodes.count; ++j {
-                    if self.usersInRange.value[i].link.nodeId == loopNodes[j] {
-                        print("Attemting to clean mesh network of user with id \(self.usersInRange.value[i].id)")
-                        self.usersInRange.value.removeAtIndex(i)
-                        print("Count: \(self.usersInRange.value.count)")
-                        break
-                    }
-                }
-            }
+        dispatch_async(dispatch_get_global_queue(qos_class_main(), 0), {
+            let data = ("connection_request_\(self.deviceId)").dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
+            user.link.sendFrame(data)
         })
     }
 }
