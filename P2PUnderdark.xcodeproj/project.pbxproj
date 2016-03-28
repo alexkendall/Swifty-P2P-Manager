@@ -257,6 +257,8 @@
 		FA0BA61E1CA312DD00D1A0B5 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				FAE8AB141CA463BD00264F31 /* UserTableCell.swift */,
+				FAE8AB161CA463E400264F31 /* UserTableCell.xib */,
 				FA0BA6001CA2D1F500D1A0B5 /* ChatFieldCell.swift */,
 				FA0BA6041CA2D25800D1A0B5 /* ChatFieldCell.xib */,
 				FA0BA6021CA2D23400D1A0B5 /* MessageTableCell.swift */,
@@ -267,8 +269,6 @@
 				FA0BA6221CA314DB00D1A0B5 /* HostCell.swift */,
 				FAE8AB101CA4625D00264F31 /* UserCell.xib */,
 				FAE8AB121CA4632400264F31 /* UserCell.swift */,
-				FAE8AB141CA463BD00264F31 /* UserTableCell.swift */,
-				FAE8AB161CA463E400264F31 /* UserTableCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";

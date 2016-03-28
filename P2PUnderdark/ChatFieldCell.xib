@@ -24,7 +24,7 @@
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="leN-w8-B5M">
                                 <rect key="frame" x="297" y="0.0" width="75" height="43"/>
-                                <color key="backgroundColor" red="0.23793948103161777" green="0.64481209150326801" blue="0.347721196476172" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.87867128759398494" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="75" id="WEI-Bs-Rox"/>
                                 </constraints>

@@ -50,14 +50,14 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
         lastIncommingMessage.value = message
         if message.containsString("host_") {
             let id = message.stringByReplacingOccurrencesOfString("host_", withString: "")
-            addUser(User(_id: id, _link: link, _mode: .Host))
+            addUser(User(_id: id, _link: link, _mode: .Host, isConnected: false))
             
         } else if message.containsString("client_") {
             let id = message.stringByReplacingOccurrencesOfString("client_", withString: "")
-            addUser(User(_id: id, _link: link, _mode: .Client))
+            addUser(User(_id: id, _link: link, _mode: .Client, isConnected: false))
         } else if message.containsString("connection_request") {
             let device = message.stringByReplacingOccurrencesOfString("connection_request_", withString: "")
-            let user = User(_id: device, _link: link, _mode: NetworkMode.Peer)
+            let user = User(_id: device, _link: link, _mode: NetworkMode.Peer, isConnected: false)
             let alertController = UIAlertController()
             let acceptAction = UIAlertAction(title: "Accept", style: UIAlertActionStyle.Default , handler: {_ in
                 for peer in self.peers.value {
@@ -78,10 +78,10 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
             UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
         } else if message.containsString("allow_") {
             let userId = message.stringByReplacingOccurrencesOfString("allow_", withString: "")
-            let user = User(_id: userId, _link: link, _mode: NetworkMode.Peer)
-            for peer in self.peers.value {
-                if peer.id == user.id {
-                    return
+            let user = User(_id: userId, _link: link, _mode: NetworkMode.Peer, isConnected: true)
+            for var i = 0; i < peers.value.count; ++i {
+                if user.id == self.peers.value[i].id {
+                    self.peers.value.removeAtIndex(i)
                 }
             }
             self.peers.value.append(user)
@@ -89,6 +89,12 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
             for peer in self.peers.value {
                 peer.printInfo()
             }
+            for var i = 0; i < usersInRange.value.count; ++i {
+                if user.id == self.usersInRange.value[i].id {
+                    self.usersInRange.value.removeAtIndex(i)
+                }
+            }
+            self.usersInRange.value.append(user)
         }
         else {
             print("MESSAGE RECIEVED \(message)")
@@ -180,8 +186,10 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
         inbox.value = []
     }
     func askToConnectToPeer(user: User) {
+        print("asking to connect to peer")
         let data = ("connection_request_\(deviceId)").dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
         user.link.sendFrame(data)
+        print("connection request sent")
     }
     func authenticateUser(user: User) {
         let data = ("allow_\(deviceId)").dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
@@ -189,16 +197,3 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
     }
 }
 
-public class User {
-    var link:UDLink!
-    var mode: NetworkMode!
-    var id: String
-    init(_id: String, _link: UDLink!,_mode: NetworkMode) {
-        link = _link
-        mode = _mode
-        id = _id
-    }
-    func printInfo() {
-        print("User\nId: \(id)\nNodeId: \(link.nodeId)\nType: \(mode.rawValue)")
-    }
-}

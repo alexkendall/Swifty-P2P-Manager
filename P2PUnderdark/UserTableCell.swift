@@ -3,36 +3,32 @@ import UIKit
 import ReactiveCocoa
 
 class UserTableCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate {
-    let users:MutableProperty<[User]> = MutableProperty([User]())
     let discoverableUsers: MutableProperty<[User]> = MutableProperty([User]())
     let reuseId = "cellResuseid"
     @IBOutlet weak var userTable: UITableView!
     func configureRac(signal: Signal<[User], NoError>) {
         userTable.dataSource = self
         userTable.delegate = self
-        users <~ signal
-        users.signal
-            .observeNext{
-                self.userTable.reloadData()
-                var discoverable = [User]()
-                for var i = 0; i < $0.count; ++i {
-                    if $0[i].mode == .Host {
-                        discoverable.append($0[i])
-                    }
-                }
-                self.discoverableUsers.value = discoverable
-        }
+        discoverableUsers <~ signal
         discoverableUsers.signal
-            .observeNext {_ in
+            .observeNext{_ in
                 self.userTable.reloadData()
-            }
+                print("User Table Changed")
+        }
         userTable.registerNib(UINib(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: reuseId)
     }
     // MARK: Data Source
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(reuseId, forIndexPath: indexPath) as? UserCell ?? UserCell()
-        cell.idLabel.text = discoverableUsers.value[indexPath.row].id
-        cell.typeLabel.text = discoverableUsers.value[indexPath.row].mode.rawValue
+        let user = discoverableUsers.value[indexPath.row]
+        // lookup user in peers
+        cell.idLabel.text = user.id
+        cell.typeLabel.text = user.mode.rawValue
+        if user.connected {
+            cell.idLabel.textColor = UIView().tintColor
+        } else {
+            cell.idLabel.textColor = .blackColor()
+        }
         return cell
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
