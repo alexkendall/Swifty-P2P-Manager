@@ -265,9 +265,9 @@
 				FA0BA6021CA2D23400D1A0B5 /* MessageTableCell.swift */,
 				FA0BA6061CA2D3B700D1A0B5 /* MessageTableCell.xib */,
 				FA0BA6201CA3130D00D1A0B5 /* HostCell.xib */,
+				FA0BA6221CA314DB00D1A0B5 /* HostCell.swift */,
 				FA7F1EBD1CA42B7D0014AD3C /* HeaderCell.swift */,
 				FA7F1EBF1CA42B9F0014AD3C /* HeaderCell.xib */,
-				FA0BA6221CA314DB00D1A0B5 /* HostCell.swift */,
 				FAE8AB101CA4625D00264F31 /* UserCell.xib */,
 				FAE8AB121CA4632400264F31 /* UserCell.swift */,
 			);

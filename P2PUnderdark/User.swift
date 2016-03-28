@@ -2,6 +2,11 @@ import UIKit
 import Foundation
 import Underdark
 
+public enum NetworkMode: String {
+    case Host = "host"
+    case Client = "client"
+}
+
 public class User {
     var link:UDLink!
     var mode: NetworkMode!

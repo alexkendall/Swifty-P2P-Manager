@@ -4,23 +4,15 @@ import ReactiveCocoa
 
 class UserTableCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate {
     let discoverableUsers: MutableProperty<[User]> = MutableProperty([User]())
-    var hosts: MutableProperty<[User]> {
-        var hostList = [User]()
-        for user in discoverableUsers.value {
-            if user.mode == .Host || user.connected {
-                hostList.append(user)
-            }
-        }
-        return MutableProperty(hostList)
-    }
-    
+    var hosts: MutableProperty<[User]> = MutableProperty([User]())
     // user can only see hosts, clients are invisible
     let reuseId = "cellResuseid"
     @IBOutlet weak var userTable: UITableView!
-    func configureRac(signal: Signal<[User], NoError>) {
+    func configureRac(discoverableSignal: Signal<[User], NoError>, hostSignal: Signal<[User], NoError>) {
         userTable.dataSource = self
         userTable.delegate = self
-        discoverableUsers <~ signal
+        discoverableUsers <~ discoverableSignal
+        hosts <~ hostSignal
         discoverableUsers.signal
             .observeNext{_ in
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -29,6 +21,7 @@ class UserTableCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate
                 print("reloading data")
         }
         userTable.registerNib(UINib(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: reuseId)
+        userTable.separatorStyle = .None
     }
     // MARK: Data Source
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

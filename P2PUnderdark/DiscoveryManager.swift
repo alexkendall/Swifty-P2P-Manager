@@ -2,17 +2,12 @@ import Foundation
 import Underdark
 import ReactiveCocoa
 
-public enum NetworkMode: String {
-    case Host = "host"
-    case Client = "client"
-    case Peer = "peer"
-}
-var mode: NetworkMode!
 
-public
-class DiscoveryManager: NSObject, UDTransportDelegate {
+
+public class DiscoveryManager: NSObject, UDTransportDelegate {
     // MARK: Public Vars
     public let usersInRange: MutableProperty<[User]> = MutableProperty([User]())
+    public var connectedPeers: MutableProperty<[User]> =  MutableProperty([User]())
     // MARK: Private Vars
     private var links: [UDLink] = []
     private var appId: Int32 = 123456
@@ -22,6 +17,7 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
     private let lastIncommingMessage: MutableProperty<String> = MutableProperty("")
     public let inbox: MutableProperty<[String]> = MutableProperty([])
     private let deviceId = UIDevice.currentDevice().identifierForVendor!.UUIDString
+    var mode: NetworkMode!
     required public init(inMode: NetworkMode) {
         super.init()
         mode = inMode
@@ -38,6 +34,17 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
         lastIncommingMessage.signal
             .observeNext {self.inbox.value.append($0)}
         transport.start()
+        usersInRange.value = []
+        usersInRange.signal
+            .observeNext{userList in
+                var hostList = [User]()
+                for user in userList {
+                    if user.mode == .Host || user.connected {
+                        hostList.append(user)
+                    }
+                }
+                self.connectedPeers.value = hostList
+            }
     }
     deinit {
         transport?.stop()
@@ -57,6 +64,8 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
             let device = message.stringByReplacingOccurrencesOfString("connection_request_", withString: "")
             let user = User(_id: device, _link: link, _mode: NetworkMode.Client, isConnected: false)
             let alertController = UIAlertController()
+            alertController.title = "Connection Request"
+            alertController.message = "Click 'Yes' to allow user to connect to you and 'No' to decline"
             let acceptAction = UIAlertAction(title: "Accept", style: UIAlertActionStyle.Default , handler: {_ in
                 self.authenticateUser(user)
             })
@@ -100,7 +109,6 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
         broadcastType()
     }
     public func transport(transport: UDTransport!, linkDisconnected link: UDLink!) {
-        print("Link disconnected")
         removeLink(link)
     }
     // MARK: Private functions
@@ -164,8 +172,8 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
     }
     func sendMessageToPeers(text: String) {
         let data = text.dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
-        if !usersInRange.value.isEmpty {
-            for peer in usersInRange.value {
+        if !connectedPeers.value.isEmpty {
+            for peer in connectedPeers.value {
                 if peer.connected {
                     peer.link.sendFrame(data)
                 }
@@ -176,10 +184,8 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
         inbox.value = []
     }
     func askToConnectToPeer(user: User) {
-        print("asking to connect to peer")
         let data = ("connection_request_\(deviceId)").dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
         user.link.sendFrame(data)
-        print("connection request sent")
     }
     func authenticateUser(user: User) {
         let data = ("allow_\(deviceId)").dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
