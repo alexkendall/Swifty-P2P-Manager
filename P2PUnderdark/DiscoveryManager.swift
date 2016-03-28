@@ -55,7 +55,7 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
             addUser(User(_id: id, _link: link, _mode: .Client, isConnected: false))
         } else if message.containsString("connection_request") {
             let device = message.stringByReplacingOccurrencesOfString("connection_request_", withString: "")
-            let user = User(_id: device, _link: link, _mode: NetworkMode.Peer, isConnected: false)
+            let user = User(_id: device, _link: link, _mode: NetworkMode.Client, isConnected: false)
             let alertController = UIAlertController()
             let acceptAction = UIAlertAction(title: "Accept", style: UIAlertActionStyle.Default , handler: {_ in
                 self.authenticateUser(user)
@@ -77,7 +77,7 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
             self.notifyConnected(user)
         } else if message.containsString("connected_") {
             let userId = message.stringByReplacingOccurrencesOfString("connected_", withString: "")
-            let user = User(_id: userId, _link: link, _mode: NetworkMode.Host, isConnected: true)
+            let user = User(_id: userId, _link: link, _mode: NetworkMode.Client, isConnected: true)
             for var i = 0; i < usersInRange.value.count; ++i {
                 if user.id == self.usersInRange.value[i].id {
                     self.usersInRange.value.removeAtIndex(i)
@@ -98,9 +98,7 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
         }
         addLink(link)
         broadcastType()
-         print("link connected")
     }
-    
     public func transport(transport: UDTransport!, linkDisconnected link: UDLink!) {
         print("Link disconnected")
         removeLink(link)
@@ -154,11 +152,13 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
     }
     // MARK: Public Functions
     public func startScanningAsClient() {
+        usersInRange.value = []
         mode = .Client
         broadcastType()
         
     }
     public func startAdvertisingAsHost() {
+        usersInRange.value = []
         mode = .Host
         broadcastType()
     }

@@ -37,10 +37,11 @@ class UserTableCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate
         // lookup user in peers
         cell.idLabel.text = user.id
         cell.typeLabel.text = user.mode.rawValue
+        cell.wifiIcon.setGMDIcon(GMDType.GMDWifi, size: 40.0, forState: .Normal)
         if user.connected {
-            cell.idLabel.textColor = UIView().tintColor
+            cell.wifiIcon.setTitleColor(UIView().tintColor, forState: .Normal)
         } else {
-            cell.idLabel.textColor = .blackColor()
+            cell.wifiIcon.setTitleColor(.grayColor(), forState: .Normal)
         }
         return cell
     }
