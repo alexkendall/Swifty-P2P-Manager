@@ -12,7 +12,6 @@ var mode: NetworkMode!
 public
 class DiscoveryManager: NSObject, UDTransportDelegate {
     // MARK: Public Vars
-    public let peers: MutableProperty<[User]> = MutableProperty([User]())
     public let usersInRange: MutableProperty<[User]> = MutableProperty([User]())
     // MARK: Private Vars
     private var links: [UDLink] = []
@@ -60,16 +59,6 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
             let user = User(_id: device, _link: link, _mode: NetworkMode.Peer, isConnected: false)
             let alertController = UIAlertController()
             let acceptAction = UIAlertAction(title: "Accept", style: UIAlertActionStyle.Default , handler: {_ in
-                for peer in self.peers.value {
-                    if peer.id == user.id {
-                        return
-                    }
-                }
-                self.peers.value.append(user)
-                print("added peer to peer table")
-                for peer in self.peers.value {
-                    peer.printInfo()
-                }
                 self.authenticateUser(user)
             })
             let declineAction = UIAlertAction(title: "Decline", style: UIAlertActionStyle.Cancel, handler: nil)
@@ -78,17 +67,18 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
             UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
         } else if message.containsString("allow_") {
             let userId = message.stringByReplacingOccurrencesOfString("allow_", withString: "")
-            let user = User(_id: userId, _link: link, _mode: NetworkMode.Peer, isConnected: true)
-            for var i = 0; i < peers.value.count; ++i {
-                if user.id == self.peers.value[i].id {
-                    self.peers.value.removeAtIndex(i)
+            let user = User(_id: userId, _link: link, _mode: NetworkMode.Host, isConnected: true)
+            for var i = 0; i < usersInRange.value.count; ++i {
+                if user.id == self.usersInRange.value[i].id {
+                    self.usersInRange.value.removeAtIndex(i)
                 }
             }
-            self.peers.value.append(user)
-            print("added peer to peer table (allow)")
-            for peer in self.peers.value {
-                peer.printInfo()
-            }
+            self.usersInRange.value.append(user)
+            // notify other use this user has connected to the other
+            self.notifyConnected(user)
+        } else if message.containsString("connected_") {
+            let userId = message.stringByReplacingOccurrencesOfString("connected_", withString: "")
+            let user = User(_id: userId, _link: link, _mode: NetworkMode.Client, isConnected: true)
             for var i = 0; i < usersInRange.value.count; ++i {
                 if user.id == self.usersInRange.value[i].id {
                     self.usersInRange.value.removeAtIndex(i)
@@ -100,7 +90,6 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
             print("MESSAGE RECIEVED \(message)")
         }
     }
-    
     public func transport(transport: UDTransport!, linkConnected link: UDLink!) {
         // check if link belongs to prexisting user, if not then add
         for var i = 0; i < usersInRange.value.count; ++i {
@@ -176,9 +165,11 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
     }
     func sendMessageToPeers(text: String) {
         let data = text.dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
-        if !peers.value.isEmpty {
-            for peer in peers.value {
-                peer.link.sendFrame(data)
+        if !usersInRange.value.isEmpty {
+            for peer in usersInRange.value {
+                if peer.connected {
+                    peer.link.sendFrame(data)
+                }
             }
         }
     }
@@ -193,6 +184,10 @@ class DiscoveryManager: NSObject, UDTransportDelegate {
     }
     func authenticateUser(user: User) {
         let data = ("allow_\(deviceId)").dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
+        user.link.sendFrame(data)
+    }
+    func notifyConnected(user: User) {
+        let data = ("connected_\(deviceId)").dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
         user.link.sendFrame(data)
     }
 }
