@@ -11,32 +11,32 @@
             <rect key="frame" x="0.0" y="0.0" width="463" height="60"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xZs-a9-5CR" id="psq-f5-SeK">
-                <rect key="frame" x="0.0" y="0.0" width="463" height="59.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="463" height="59"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ja9-Dk-Ydl">
                         <rect key="frame" x="8" y="8" width="447" height="43"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="MESSAGE" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Dtc-b7-U9L">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="MESSAGE" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Dtc-b7-U9L">
                                 <rect key="frame" x="0.0" y="0.0" width="297" height="43"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="leN-w8-B5M">
                                 <rect key="frame" x="297" y="0.0" width="75" height="43"/>
-                                <color key="backgroundColor" white="0.87867128759398494" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.49443423199999997" green="0.49443423199999997" blue="0.49443423199999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="75" id="WEI-Bs-Rox"/>
                                 </constraints>
                                 <state key="normal" title="SEND">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rKg-5r-AQg">
                                 <rect key="frame" x="372" y="0.0" width="75" height="43"/>
                                 <color key="backgroundColor" red="1" green="0.094009157199999999" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="CLEAR">
-                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
                         </subviews>

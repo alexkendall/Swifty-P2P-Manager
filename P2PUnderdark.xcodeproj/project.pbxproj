@@ -21,7 +21,7 @@
 		FA0BA6071CA2D3B700D1A0B5 /* MessageTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA0BA6061CA2D3B700D1A0B5 /* MessageTableCell.xib */; };
 		FA0BA6091CA2D70C00D1A0B5 /* Underdark.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA0BA6081CA2D70C00D1A0B5 /* Underdark.framework */; };
 		FA0BA60C1CA2D72400D1A0B5 /* Underdark.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FA0BA60A1CA2D72400D1A0B5 /* Underdark.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		FA0BA6101CA2D7C000D1A0B5 /* DiscoveryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0BA60F1CA2D7C000D1A0B5 /* DiscoveryManager.swift */; };
+		FA0BA6101CA2D7C000D1A0B5 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0BA60F1CA2D7C000D1A0B5 /* NetworkManager.swift */; };
 		FA0BA6141CA2E3ED00D1A0B5 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA0BA6111CA2E3ED00D1A0B5 /* ReactiveCocoa.framework */; };
 		FA0BA6151CA2E3ED00D1A0B5 /* ReactiveCocoa.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FA0BA6111CA2E3ED00D1A0B5 /* ReactiveCocoa.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FA0BA6161CA2E3EE00D1A0B5 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA0BA6131CA2E3ED00D1A0B5 /* Result.framework */; };
@@ -124,7 +124,7 @@
 		FA0BA6061CA2D3B700D1A0B5 /* MessageTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageTableCell.xib; sourceTree = "<group>"; };
 		FA0BA6081CA2D70C00D1A0B5 /* Underdark.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Underdark.framework; path = ../../Downloads/Underdark.framework; sourceTree = "<group>"; };
 		FA0BA60A1CA2D72400D1A0B5 /* Underdark.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Underdark.framework; sourceTree = "<group>"; };
-		FA0BA60F1CA2D7C000D1A0B5 /* DiscoveryManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryManager.swift; sourceTree = "<group>"; };
+		FA0BA60F1CA2D7C000D1A0B5 /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		FA0BA6111CA2E3ED00D1A0B5 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/iOS/ReactiveCocoa.framework; sourceTree = "<group>"; };
 		FA0BA6131CA2E3ED00D1A0B5 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
 		FA0BA6201CA3130D00D1A0B5 /* HostCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HostCell.xib; sourceTree = "<group>"; };
@@ -210,7 +210,7 @@
 			children = (
 				FA3AC95A1CA97B8300BA84F2 /* Icons */,
 				FA0BA5D21CA2D14C00D1A0B5 /* AppDelegate.swift */,
-				FA0BA60F1CA2D7C000D1A0B5 /* DiscoveryManager.swift */,
+				FA0BA60F1CA2D7C000D1A0B5 /* NetworkManager.swift */,
 				FAE8AB181CA578CE00264F31 /* User.swift */,
 				FA7F1EBC1CA42B650014AD3C /* GoogleMaterials */,
 				FA7F1EB71CA424E50014AD3C /* ViewControllers */,
@@ -496,7 +496,7 @@
 				FA0BA5D51CA2D14C00D1A0B5 /* ChatController.swift in Sources */,
 				FA0BA6011CA2D1F500D1A0B5 /* ChatFieldCell.swift in Sources */,
 				FA4E09A41CA3270A008340E2 /* GMDIcon.swift in Sources */,
-				FA0BA6101CA2D7C000D1A0B5 /* DiscoveryManager.swift in Sources */,
+				FA0BA6101CA2D7C000D1A0B5 /* NetworkManager.swift in Sources */,
 				FA7F1EBB1CA4274B0014AD3C /* ConnectionsController.swift in Sources */,
 				FA0BA6031CA2D23400D1A0B5 /* MessageTableCell.swift in Sources */,
 				FA7F1EBE1CA42B7D0014AD3C /* HeaderCell.swift in Sources */,
@@ -654,6 +654,7 @@
 				);
 				INFOPLIST_FILE = P2PUnderdark/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = alexkendall.P2PUnderdark;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -671,6 +672,7 @@
 				);
 				INFOPLIST_FILE = P2PUnderdark/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = alexkendall.P2PUnderdark;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

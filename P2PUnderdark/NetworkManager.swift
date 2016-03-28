@@ -4,10 +4,11 @@ import ReactiveCocoa
 
 
 
-public class DiscoveryManager: NSObject, UDTransportDelegate {
+public class NetworkManager: NSObject, UDTransportDelegate {
     // MARK: Public Vars
     public let usersInRange: MutableProperty<[User]> = MutableProperty([User]())
     public var connectedPeers: MutableProperty<[User]> =  MutableProperty([User]())
+    public let inbox: MutableProperty<[String]> = MutableProperty([])
     // MARK: Private Vars
     private var links: [UDLink] = []
     private var appId: Int32 = 123456
@@ -15,7 +16,6 @@ public class DiscoveryManager: NSObject, UDTransportDelegate {
     private var transport: UDTransport!
     private let queue = dispatch_get_main_queue()
     private let lastIncommingMessage: MutableProperty<String> = MutableProperty("")
-    public let inbox: MutableProperty<[String]> = MutableProperty([])
     private let deviceId = UIDevice.currentDevice().identifierForVendor!.UUIDString
     var mode: NetworkMode!
     required public init(inMode: NetworkMode) {
@@ -44,6 +44,7 @@ public class DiscoveryManager: NSObject, UDTransportDelegate {
                     }
                 }
                 self.connectedPeers.value = hostList
+                print("USER COUNT: \(self.usersInRange.value.count)")
             }
     }
     deinit {
@@ -65,7 +66,7 @@ public class DiscoveryManager: NSObject, UDTransportDelegate {
             let user = User(_id: device, _link: link, _mode: NetworkMode.Client, isConnected: false)
             let alertController = UIAlertController()
             alertController.title = "Connection Request"
-            alertController.message = "Click 'Yes' to allow user to connect to you and 'No' to decline"
+            alertController.message = "Click 'Yes' to allow user to connect to you and 'Decline' to prevent access from the user."
             let acceptAction = UIAlertAction(title: "Accept", style: UIAlertActionStyle.Default , handler: {_ in
                 self.authenticateUser(user)
             })
@@ -95,6 +96,7 @@ public class DiscoveryManager: NSObject, UDTransportDelegate {
             self.usersInRange.value.append(user)
         }
         else {
+            // handle message
             print("MESSAGE RECIEVED \(message)")
         }
     }
@@ -149,7 +151,7 @@ public class DiscoveryManager: NSObject, UDTransportDelegate {
         }
         links.append(link)
     }
-    private func broadcastType() {
+    public func broadcastType() {
         let text = mode.rawValue + "_" + UIDevice.currentDevice().identifierForVendor!.UUIDString
         let data = text.dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
         if !links.isEmpty {
@@ -157,6 +159,15 @@ public class DiscoveryManager: NSObject, UDTransportDelegate {
                 link.sendFrame(data)
             }
         }
+        print("broadcasting type...")
+    }
+    private func authenticateUser(user: User) {
+        let data = ("allow_\(deviceId)").dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
+        user.link.sendFrame(data)
+    }
+    private func notifyConnected(user: User) {
+        let data = ("connected_\(deviceId)").dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
+        user.link.sendFrame(data)
     }
     // MARK: Public Functions
     public func startScanningAsClient() {
@@ -187,13 +198,4 @@ public class DiscoveryManager: NSObject, UDTransportDelegate {
         let data = ("connection_request_\(deviceId)").dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
         user.link.sendFrame(data)
     }
-    func authenticateUser(user: User) {
-        let data = ("allow_\(deviceId)").dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
-        user.link.sendFrame(data)
-    }
-    func notifyConnected(user: User) {
-        let data = ("connected_\(deviceId)").dataUsingEncoding(NSUTF8StringEncoding) ?? NSData()
-        user.link.sendFrame(data)
-    }
 }
-

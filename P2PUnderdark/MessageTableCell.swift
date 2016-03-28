@@ -36,6 +36,7 @@ class MessageTableCell: UITableViewCell, UITableViewDataSource, UITableViewDeleg
         } else {
             cell.backgroundColor = .whiteColor()
         }
+        cell.textLabel?.font = UIFont.systemFontOfSize(13.0)
         return cell
     }
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
