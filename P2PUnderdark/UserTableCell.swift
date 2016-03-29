@@ -10,12 +10,13 @@ class UserTableCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate
     func configureRac(hostSignal: Signal<[User], NoError>) {
         userTable.dataSource = self
         userTable.delegate = self
+        hosts <~ hostSignal
         hosts.signal
             .observeNext{_ in
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     self.userTable.reloadData()
+                    print("reloading data...")
                 })
-                print("reloading data...")
         }
         userTable.registerNib(UINib(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: reuseId)
         userTable.separatorStyle = .None

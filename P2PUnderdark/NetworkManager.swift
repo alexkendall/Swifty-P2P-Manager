@@ -39,6 +39,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         usersInRange.value = []
         usersInRange.signal
             .observeNext{userList in
+                print("signal changed @")
                 var hostList = [User]()
                 for user in userList {
                     if user.mode == .Host || user.connected {
@@ -101,10 +102,8 @@ public class NetworkManager: NSObject, UDTransportDelegate {
             }
             self.addUser(user)
         }
-        else {
-            // handle message
-            print("recieved \(message)")
-        }
+        // handle message
+        print("recieved \(message)")
     }
     public func transport(transport: UDTransport!, linkConnected link: UDLink!) {
         // check if link belongs to prexisting user, if not then add
@@ -141,6 +140,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
                 }
             }
             self.usersInRange.value.append(user)
+            print("adding user")
             self.cleanMesh()
         })
     }
