@@ -16,8 +16,6 @@ class UserTableCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     self.userTable.reloadData()
                     print("reloading data..@@.")
-                    self.userTable.setNeedsDisplay()
-                    self.userTable.setNeedsLayout()
                 })
         }
         userTable.registerNib(UINib(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: reuseId)
@@ -25,6 +23,7 @@ class UserTableCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate
     }
     // MARK: Data Source
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        print("returning cell @ row \(indexPath.row)")
         let cell = tableView.dequeueReusableCellWithIdentifier(reuseId, forIndexPath: indexPath) as? UserCell ?? UserCell()
         let user = hosts.value[indexPath.row]
         // lookup user in peers
@@ -44,9 +43,11 @@ class UserTableCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate
     }
     // MARK: Delegate
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        print("height: \(100.0)")
         return 100.0
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        print("asking to connect to peer")
         networkManager.askToConnectToPeer(hosts.value[indexPath.row])
     }
 }

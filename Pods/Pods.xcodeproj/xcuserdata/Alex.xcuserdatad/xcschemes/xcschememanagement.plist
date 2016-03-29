@@ -4,73 +4,30 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Alamofire.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-			<key>orderHint</key>
-			<integer>1</integer>
-		</dict>
 		<key>Google-Material-Design-Icons-Swift-Google-Material-Design-Icons-Swift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>3</integer>
 		</dict>
 		<key>Google-Material-Design-Icons-Swift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>2</integer>
 		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>4</integer>
-		</dict>
-		<key>ReactiveCocoa.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>5</integer>
-		</dict>
-		<key>Result.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>6</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>3BB1C634C13BEDAF19B00613313F8B04</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>79C040AFDDCE1BCBF6D8B5EB0B85887F</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>AB7C33FAFB5CE8E05724EF23738FA664</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>B85FAFDB9B7C36C63BCEE26C17C9C213</key>
+		<key>BF2D25D9C713ED814CA0437C95DEE1C8</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>D114A5CC5C953FEA6759C91DAA86139F</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E9CDB3E9FBA323B94BDCFCEB1F4FD60E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
