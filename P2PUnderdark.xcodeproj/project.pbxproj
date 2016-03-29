@@ -19,7 +19,6 @@
 		FA0BA6031CA2D23400D1A0B5 /* MessageTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0BA6021CA2D23400D1A0B5 /* MessageTableCell.swift */; };
 		FA0BA6051CA2D25800D1A0B5 /* ChatFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA0BA6041CA2D25800D1A0B5 /* ChatFieldCell.xib */; };
 		FA0BA6071CA2D3B700D1A0B5 /* MessageTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA0BA6061CA2D3B700D1A0B5 /* MessageTableCell.xib */; };
-		FA0BA6091CA2D70C00D1A0B5 /* Underdark.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA0BA6081CA2D70C00D1A0B5 /* Underdark.framework */; };
 		FA0BA60C1CA2D72400D1A0B5 /* Underdark.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FA0BA60A1CA2D72400D1A0B5 /* Underdark.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FA0BA6101CA2D7C000D1A0B5 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0BA60F1CA2D7C000D1A0B5 /* NetworkManager.swift */; };
 		FA0BA6141CA2E3ED00D1A0B5 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA0BA6111CA2E3ED00D1A0B5 /* ReactiveCocoa.framework */; };
@@ -32,9 +31,6 @@
 		FA0BA6231CA314DB00D1A0B5 /* HostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0BA6221CA314DB00D1A0B5 /* HostCell.swift */; };
 		FA4E09A41CA3270A008340E2 /* GMDIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4E09A31CA3270A008340E2 /* GMDIcon.swift */; };
 		FA4E09A81CA32A77008340E2 /* GMDIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA4E09A71CA32A77008340E2 /* GMDIcons.ttf */; };
-		FA51E2A91CA325E40045A210 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA51E2A81CA325E40045A210 /* SwiftyJSON.framework */; };
-		FA51E2AA1CA325E40045A210 /* SwiftyJSON.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FA51E2A81CA325E40045A210 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		FA51E2AC1CA325F70045A210 /* SwiftyJSON.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FA51E2AB1CA325F70045A210 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FA7F1EB91CA4250D0014AD3C /* HostClientController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7F1EB81CA4250D0014AD3C /* HostClientController.swift */; };
 		FA7F1EBB1CA4274B0014AD3C /* ConnectionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7F1EBA1CA4274B0014AD3C /* ConnectionsController.swift */; };
 		FA7F1EBE1CA42B7D0014AD3C /* HeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7F1EBD1CA42B7D0014AD3C /* HeaderCell.swift */; };
@@ -70,7 +66,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				FA51E2AA1CA325E40045A210 /* SwiftyJSON.framework in Embed Frameworks */,
 				FA0BA6171CA2E3EE00D1A0B5 /* Result.framework in Embed Frameworks */,
 				FA0BA60C1CA2D72400D1A0B5 /* Underdark.framework in Embed Frameworks */,
 				FA0BA6151CA2E3ED00D1A0B5 /* ReactiveCocoa.framework in Embed Frameworks */,
@@ -93,7 +88,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
-				FA51E2AC1CA325F70045A210 /* SwiftyJSON.framework in CopyFiles */,
 				FA0BA61A1CA2E40D00D1A0B5 /* ReactiveCocoa.framework in CopyFiles */,
 				FA0BA61C1CA2E40D00D1A0B5 /* Result.framework in CopyFiles */,
 			);
@@ -122,7 +116,6 @@
 		FA0BA6021CA2D23400D1A0B5 /* MessageTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageTableCell.swift; sourceTree = "<group>"; };
 		FA0BA6041CA2D25800D1A0B5 /* ChatFieldCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatFieldCell.xib; sourceTree = "<group>"; };
 		FA0BA6061CA2D3B700D1A0B5 /* MessageTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageTableCell.xib; sourceTree = "<group>"; };
-		FA0BA6081CA2D70C00D1A0B5 /* Underdark.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Underdark.framework; path = ../../Downloads/Underdark.framework; sourceTree = "<group>"; };
 		FA0BA60A1CA2D72400D1A0B5 /* Underdark.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Underdark.framework; sourceTree = "<group>"; };
 		FA0BA60F1CA2D7C000D1A0B5 /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		FA0BA6111CA2E3ED00D1A0B5 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/iOS/ReactiveCocoa.framework; sourceTree = "<group>"; };
@@ -131,8 +124,6 @@
 		FA0BA6221CA314DB00D1A0B5 /* HostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HostCell.swift; sourceTree = "<group>"; };
 		FA4E09A31CA3270A008340E2 /* GMDIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GMDIcon.swift; sourceTree = "<group>"; };
 		FA4E09A71CA32A77008340E2 /* GMDIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GMDIcons.ttf; sourceTree = "<group>"; };
-		FA51E2A81CA325E40045A210 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
-		FA51E2AB1CA325F70045A210 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		FA7F1EB81CA4250D0014AD3C /* HostClientController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HostClientController.swift; sourceTree = "<group>"; };
 		FA7F1EBA1CA4274B0014AD3C /* ConnectionsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionsController.swift; sourceTree = "<group>"; };
 		FA7F1EBD1CA42B7D0014AD3C /* HeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderCell.swift; sourceTree = "<group>"; };
@@ -150,10 +141,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA0BA6161CA2E3EE00D1A0B5 /* Result.framework in Frameworks */,
-				FA0BA6091CA2D70C00D1A0B5 /* Underdark.framework in Frameworks */,
 				FA0BA6141CA2E3ED00D1A0B5 /* ReactiveCocoa.framework in Frameworks */,
 				DEF1E8BB52945791A55C3F56 /* Pods.framework in Frameworks */,
-				FA51E2A91CA325E40045A210 /* SwiftyJSON.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,12 +233,9 @@
 		FA0BA60E1CA2D73000D1A0B5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				FA51E2AB1CA325F70045A210 /* SwiftyJSON.framework */,
-				FA51E2A81CA325E40045A210 /* SwiftyJSON.framework */,
 				FA0BA6111CA2E3ED00D1A0B5 /* ReactiveCocoa.framework */,
 				FA0BA6131CA2E3ED00D1A0B5 /* Result.framework */,
 				FA0BA60A1CA2D72400D1A0B5 /* Underdark.framework */,
-				FA0BA6081CA2D70C00D1A0B5 /* Underdark.framework */,
 				06C20C76F2B00B875692B10D /* Pods.framework */,
 			);
 			name = Frameworks;

@@ -15,7 +15,9 @@ class UserTableCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate
             .observeNext{_ in
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     self.userTable.reloadData()
-                    print("reloading data...")
+                    print("reloading data..@@.")
+                    self.userTable.setNeedsDisplay()
+                    self.userTable.setNeedsLayout()
                 })
         }
         userTable.registerNib(UINib(nibName: "UserCell", bundle: nil), forCellReuseIdentifier: reuseId)

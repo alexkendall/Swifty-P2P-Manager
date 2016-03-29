@@ -49,6 +49,10 @@ public class NetworkManager: NSObject, UDTransportDelegate {
                 }
                 self.connectedPeers.value = hostList
             }
+        connectedPeers.signal
+            .observeNext {_ in 
+                print("connected peers value changed")
+        }
     }
     deinit {
         transport?.stop()
@@ -82,7 +86,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         } else if message.containsString("allow_") {
             let userId = message.stringByReplacingOccurrencesOfString("allow_", withString: "")
             let user = User(_id: userId, _link: link, _mode: NetworkMode.Host, isConnected: true)
-            for var i = 0; i < usersInRange.value.count; ++i {
+            for i in 0..<usersInRange.value.count {
                 if user.id == self.usersInRange.value[i].id {
                     self.usersInRange.value.removeAtIndex(i)
                 }
@@ -93,7 +97,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         } else if message.containsString("connected_") {
             let userId = message.stringByReplacingOccurrencesOfString("connected_", withString: "")
             let user = User(_id: userId, _link: link, _mode: NetworkMode.Client, isConnected: true)
-            for var i = 0; i < usersInRange.value.count; ++i {
+            for i in 0..<usersInRange.value.count {
                 if user.id == self.usersInRange.value[i].id {
                     self.usersInRange.value.removeAtIndex(i)
                 } else {
@@ -107,7 +111,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     }
     public func transport(transport: UDTransport!, linkConnected link: UDLink!) {
         // check if link belongs to prexisting user, if not then add
-        for var i = 0; i < usersInRange.value.count; ++i {
+        for i in 0..<usersInRange.value.count {
             if link.nodeId == usersInRange.value[i].link.nodeId || link.nodeId == nodeId {
                 return
             }
@@ -120,7 +124,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     }
     // MARK: Private functions
     private func removeUser(user: User) {
-        for var i = 0; i < usersInRange.value.count; ++i {
+        for i in 0..<usersInRange.value.count {
             if user.id == usersInRange.value[i].id {
                 usersInRange.value.removeAtIndex(i)
             }
@@ -128,7 +132,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     }
     private func addUser(user: User) {
         dispatch_async(dispatch_get_main_queue(), {
-            for var i = 0; i < self.usersInRange.value.count; ++i {
+            for i in 0..<self.usersInRange.value.count {
                 if user.id == self.usersInRange.value[i].id {
                     if !self.usersInRange.value[i].connected && user.connected {
                         self.usersInRange.value[i] = user
@@ -145,12 +149,12 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         })
     }
     private func removeLink(link: UDLink) {
-        for var i = 0; i < links.count; ++i {
+        for i in 0..<links.count {
             if link.nodeId == links[i].nodeId {
                 links.removeAtIndex(i)
             }
         }
-        for var i = 0; i < usersInRange.value.count; ++i {
+        for i in 0..<usersInRange.value.count {
             if usersInRange.value[i].link.nodeId == link.nodeId {
                 removeUser(usersInRange.value[i])
             }
@@ -158,7 +162,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     }
     private func addLink(link: UDLink) {
        // if link already in list, return
-        for var i = 0; i < links.count; ++i {
+        for i in 0..<links.count {
             if link.nodeId == links[i].nodeId {
                 return
             }
@@ -185,8 +189,8 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     }
     private func cleanMesh() {
         dispatch_async(dispatch_get_main_queue(), {
-            for var i = 0; i < self.self.usersInRange.value.count; ++i {
-                for var j = 0; j < loopNodes.count; ++j {
+            for i in 0..<self.self.usersInRange.value.count {
+                for j in 0..<loopNodes.count {
                     if self.usersInRange.value[i].link.nodeId == loopNodes[j] {
                         print("Attemting to clean mesh network of user with id \(self.usersInRange.value[i].id)")
                         self.usersInRange.value.removeAtIndex(i)
@@ -199,16 +203,18 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     }
     // MARK: Public Functions
     public func startScanningAsClient() {
+        connectedPeers.value = []
         usersInRange.value = []
         mode = .Client
         broadcastType()
         timer.invalidate()
     }
     public func startAdvertisingAsHost() {
+        connectedPeers.value = []
         usersInRange.value = []
         mode = .Host
         broadcastType()
-        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "broadcastType", userInfo: nil, repeats: true)  // start advertising
+        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector(self.broadcastType()), userInfo: nil, repeats: true)  // start advertising
     }
     public func goOffline() {
         usersInRange.value = []
@@ -226,7 +232,9 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         }
     }
     func clearInbox() {
-        inbox.value = []
+        dispatch_async(dispatch_get_main_queue(), {
+            self.inbox.value = []
+        })
     }
     func askToConnectToPeer(user: User) {
         dispatch_async(dispatch_get_global_queue(qos_class_main(), 0), {

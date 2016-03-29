@@ -54,8 +54,8 @@ class ChatViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier(chatFieldCellId, forIndexPath: indexPath) as? ChatFieldCell ?? ChatFieldCell()
-            cell.sendButton.addTarget(self, action: "sendFrames", forControlEvents: .TouchUpInside)
-            cell.clearButton.addTarget(self, action: "clearInbox", forControlEvents: .TouchUpInside)
+            cell.sendButton.addTarget(self, action: Selector(self.sendFrames()), forControlEvents: .TouchUpInside)
+            cell.clearButton.addTarget(self, action: Selector(self.clearInbox()), forControlEvents: .TouchUpInside)
             cell.selectionStyle = .None
             self.text <~ cell.chatField.rac_textSignal()
                 .toSignalProducer()

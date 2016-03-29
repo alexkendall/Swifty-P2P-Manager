@@ -7,8 +7,8 @@ class HostCell: UITableViewCell {
     @IBOutlet weak var clientButton: UIButton!
     
     func configureActions () {
-        hostButton.addTarget(self, action: "selectHost", forControlEvents: .TouchDown)
-        clientButton.addTarget(self, action: "selectClient", forControlEvents: .TouchDown)
+        hostButton.addTarget(self, action: Selector(self.selectHost()), forControlEvents: .TouchDown)
+        clientButton.addTarget(self, action: Selector(self.selectClient()), forControlEvents: .TouchDown)
     }
     func selectClient() {
         clientButton.setTitleColor(UIView().tintColor, forState: .Normal)
