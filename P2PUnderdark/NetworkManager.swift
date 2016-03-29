@@ -100,11 +100,13 @@ public class NetworkManager: NSObject, UDTransportDelegate {
             for i in 0..<usersInRange.value.count {
                 if user.id == self.usersInRange.value[i].id {
                     self.usersInRange.value.removeAtIndex(i)
-                } else {
-                    
                 }
             }
             self.addUser(user)
+        } else if message.containsString("disconnect_") {
+            let userId = message.stringByReplacingOccurrencesOfString("disconnect_", withString: "")
+            let user = User(_id: userId, _link: link, _mode: NetworkMode.Client, isConnected: true)
+            self.disconnectFromUser(user)
         }
         // handle message
         print("recieved \(message)")
@@ -129,6 +131,15 @@ public class NetworkManager: NSObject, UDTransportDelegate {
                 usersInRange.value.removeAtIndex(i)
             }
         }
+        disconnectFromUser(user)
+        
+    }
+    private func disconnectFromUser(user: User) {
+        for i in 0..<connectedPeers.value.count {
+            if user.id == connectedPeers.value[i].id {
+                connectedPeers.value.removeAtIndex(i)
+            }
+        }
     }
     private func addUser(user: User) {
         dispatch_async(dispatch_get_main_queue(), {
@@ -144,7 +155,6 @@ public class NetworkManager: NSObject, UDTransportDelegate {
                 }
             }
             self.usersInRange.value.append(user)
-            print("adding user")
             self.cleanMesh()
         })
     }
@@ -203,18 +213,20 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     }
     // MARK: Public Functions
     public func startScanningAsClient() {
+        sendMessageToPeers("disconnect_\(deviceId)")
         connectedPeers.value = []
         usersInRange.value = []
         mode = .Client
         broadcastType()
         timer.invalidate()
+        
     }
     public func startAdvertisingAsHost() {
         connectedPeers.value = []
         usersInRange.value = []
         mode = .Host
         broadcastType()
-        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector(self.broadcastType()), userInfo: nil, repeats: true)  // start advertising
+        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(self.broadcastType), userInfo: nil, repeats: true)  // start advertising
     }
     public func goOffline() {
         usersInRange.value = []
@@ -232,9 +244,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         }
     }
     func clearInbox() {
-        dispatch_async(dispatch_get_main_queue(), {
             self.inbox.value = []
-        })
     }
     func askToConnectToPeer(user: User) {
         dispatch_async(dispatch_get_global_queue(qos_class_main(), 0), {
