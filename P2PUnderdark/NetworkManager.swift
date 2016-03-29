@@ -77,7 +77,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         } else if message.containsString("allow_") {
             let userId = message.stringByReplacingOccurrencesOfString("allow_", withString: "")
             let user = User(_id: userId, _link: link, _mode: NetworkMode.Host, isConnected: true)
-            for var i = 0; i < usersInRange.value.count; ++i {
+            for i in 0..<usersInRange.value.count {
                 if user.id == self.usersInRange.value[i].id {
                     self.usersInRange.value.removeAtIndex(i)
                 }
@@ -88,7 +88,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         } else if message.containsString("connected_") {
             let userId = message.stringByReplacingOccurrencesOfString("connected_", withString: "")
             let user = User(_id: userId, _link: link, _mode: NetworkMode.Client, isConnected: true)
-            for var i = 0; i < usersInRange.value.count; ++i {
+            for i in 0..<usersInRange.value.count {
                 if user.id == self.usersInRange.value[i].id {
                     self.usersInRange.value.removeAtIndex(i)
                 }
@@ -102,7 +102,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     }
     public func transport(transport: UDTransport!, linkConnected link: UDLink!) {
         // check if link belongs to prexisting user, if not then add
-        for var i = 0; i < usersInRange.value.count; ++i {
+        for i in 0..<usersInRange.value.count {
             if link.nodeId == usersInRange.value[i].link.nodeId {
                 return
             }
@@ -115,14 +115,14 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     }
     // MARK: Private functions
     private func removeUser(user: User) {
-        for var i = 0; i < usersInRange.value.count; ++i {
+        for i in 0..<usersInRange.value.count {
             if user.id == usersInRange.value[i].id {
                 usersInRange.value.removeAtIndex(i)
             }
         }
     }
     private func addUser(user: User) {
-        for var i = 0; i < usersInRange.value.count; ++i {
+        for i in 0..<usersInRange.value.count {
             if user.id == usersInRange.value[i].id {
                 usersInRange.value[i] = user
                 return
@@ -131,12 +131,12 @@ public class NetworkManager: NSObject, UDTransportDelegate {
         usersInRange.value.append(user)
     }
     private func removeLink(link: UDLink) {
-        for var i = 0; i < links.count; ++i {
+        for i in 0..<links.count {
             if link.nodeId == links[i].nodeId {
                 links.removeAtIndex(i)
             }
         }
-        for var i = 0; i < usersInRange.value.count; ++i {
+        for i in 0..<usersInRange.value.count {
             if usersInRange.value[i].link.nodeId == link.nodeId {
                 removeUser(usersInRange.value[i])
             }
@@ -144,7 +144,7 @@ public class NetworkManager: NSObject, UDTransportDelegate {
     }
     private func addLink(link: UDLink) {
        // if link already in list, return
-        for var i = 0; i < links.count; ++i {
+        for i in 0..<links.count {
             if link.nodeId == links[i].nodeId {
                 return
             }
