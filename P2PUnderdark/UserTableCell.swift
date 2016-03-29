@@ -3,17 +3,15 @@ import UIKit
 import ReactiveCocoa
 
 class UserTableCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate {
-    let discoverableUsers: MutableProperty<[User]> = MutableProperty([User]())
     var hosts: MutableProperty<[User]> = MutableProperty([User]())
     // user can only see hosts, clients are invisible
     let reuseId = "cellResuseid"
     @IBOutlet weak var userTable: UITableView!
-    func configureRac(discoverableSignal: Signal<[User], NoError>, hostSignal: Signal<[User], NoError>) {
+    func configureRac(hostSignal: Signal<[User], NoError>) {
         userTable.dataSource = self
         userTable.delegate = self
-        discoverableUsers <~ discoverableSignal
         hosts <~ hostSignal
-        discoverableUsers.signal
+        hosts.signal
             .observeNext{_ in
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     self.userTable.reloadData()
@@ -46,7 +44,7 @@ class UserTableCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate
         return 100.0
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        networkManager.askToConnectToPeer(discoverableUsers.value[indexPath.row])
+        networkManager.askToConnectToPeer(hosts.value[indexPath.row])
     }
 
 }

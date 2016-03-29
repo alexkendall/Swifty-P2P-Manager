@@ -84,10 +84,8 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework "Pods/Alamofire.framework"
   install_framework "Pods/Google_Material_Design_Icons_Swift.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework "Pods/Alamofire.framework"
   install_framework "Pods/Google_Material_Design_Icons_Swift.framework"
 fi
